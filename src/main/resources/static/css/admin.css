@@ -1,0 +1,31 @@
+.adminLogout {
+    text-align: center;
+    display: inline-block;
+    padding: auto;
+}
+
+.adminLogout button:hover{
+    text-shadow: 0px 0px 15px #fff5cd;
+
+}
+
+.adminLogout button {
+    background-color: inherit;
+    border: none;
+    color: inherit;
+}
+
+#cardAdmin {
+    width: 90vw;
+    margin: 0 auto;
+}
+
+.buttonCard {
+    width: 75%;
+    transition: 0.25s;
+}
+
+.buttonCard:hover {
+    transform: scale(1.05);
+
+}
