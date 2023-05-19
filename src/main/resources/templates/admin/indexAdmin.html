@@ -64,7 +64,7 @@
                 <h5 class="card-title text-center" th:text="'Стоимость тура: от ' + ${tour.getPriceSmallGroup()}"></h5>
                 <p class="card-text text-center" th:text="${tour.getDescriptionShort()}"></p>
                 <div class="align-items-center vstack" style="text-align: center">
-                    <a class="btn btn-dark m-2 buttonCard" th:href="@{/admin/tours/{id}(id=${tour.getId()})}" role="button">Подробнее о туре</a>
+                    <a class="btn btn-dark m-2 buttonCard" th:href="@{/admin/tours/info/{id}(id=${tour.getId()})}" role="button">Подробнее о туре</a>
                     <a class="btn btn-dark m-2 buttonCard" th:href="@{/admin/tours/edit/{id}(id=${tour.getId()})}" role="button">Редактировать тур</a>
                     <a class="btn btn-danger m-2 buttonCard" th:href="@{/admin/tours/delete/{id}(id=${tour.getId()})}" role="button">Удалить тур</a>
                 </div>

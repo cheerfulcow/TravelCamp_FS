@@ -1,21 +1,24 @@
 package com.example.travelcamp.services;
 
 import com.example.travelcamp.models.tours.Tour;
-import com.example.travelcamp.models.tours.TourType;
+import com.example.travelcamp.models.tours.TourImage;
+import com.example.travelcamp.repositories.ImageRepository;
 import com.example.travelcamp.repositories.TourRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @Transactional(readOnly = true)
 public class TourService {
     private final TourRepository tourRepository;
 
-    public TourService(TourRepository tourRepository) {
+    private final ImageRepository imageRepository;
+
+    public TourService(TourRepository tourRepository, ImageRepository imageRepository) {
         this.tourRepository = tourRepository;
+        this.imageRepository = imageRepository;
     }
 
     public List<Tour> findAllTours () {

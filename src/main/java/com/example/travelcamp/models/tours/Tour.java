@@ -69,6 +69,7 @@ public class Tour {
                                         // ---  --- //
 
     //Реализация типа туров через Enum
+    @NotEmpty (message = "укажите тип тура")
     private String tourType;
 
     // Храним все картинки данного тура
@@ -76,7 +77,7 @@ public class Tour {
     //Удаляем дочерний элемент, если на него не осталось ссылок
     //Lazy - при загрузке родительской сущности, дочерняя сущность загружена не будет. Вместо нее будет создан proxy-объект,
     //с помощью которого Hibernate будет отслеживать обращение к этой дочерней сущности и при первом обращении загрузит ее в память.
-    @OneToMany(mappedBy = "tour", cascade = CascadeType.ALL, orphanRemoval = true,fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "tour", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private List<TourImage> tourImageList = new ArrayList<>();
 
     @OneToMany(mappedBy = "tours", fetch = FetchType.LAZY)
@@ -114,6 +115,12 @@ public class Tour {
     // т.е. качестве продукта, к которому будет привязываться фотография будет текущий продукт
         image.setTour(this);
         tourImageList.add(image);
+    }
+    public void setImageToTour(int i, TourImage image) {
+        //Указываем, для какого конкретно тура предназначена привязываемая фотография
+        // т.е. качестве продукта, к которому будет привязываться фотография будет текущий продукт
+        image.setTour(this);
+        tourImageList.set(i, image);
     }
 
     public void replaceImageToProduct(int index, TourImage image,List<TourImage> tourImageList){
