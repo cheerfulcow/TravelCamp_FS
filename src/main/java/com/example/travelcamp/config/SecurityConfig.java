@@ -30,8 +30,8 @@ public class SecurityConfig {
         // --- начало настройки доступа --- //
         //Конфигурируем работу SS
         http
-                .cors()
-                .and()
+//                .cors()
+//                .and()
                 // указываем, что все страницы должны быть защищены аутентификацией
                 .authorizeHttpRequests()
                 // Указываем доступы к страницам для разных ролей
@@ -40,7 +40,7 @@ public class SecurityConfig {
                 //Указываем, что указанные страницы доступны всем пользователям.
                 // Добавляем в этот список также таблицы стилей, JS, папки с картинками и тд (т.к. в момент, когда у пользователя не будет роли - ему все это будет недоступно)
                .requestMatchers("/authentication", "/registration", "/error", "/person_account", "/logout", "/resources/**", "/static/**",
-                       "/css/**", "/js/**", "/img/**", "product", "/product/info/{id}", "/product/search",
+                       "/css/**", "/js/**", "/img/**", "tours", "/tour/info/{id}", "/product/search",
                        "/index").permitAll()
                 // указываем, что все остальные страницы доступны user и admin
 //                .anyRequest().hasAnyRole(Role.ADMIN.name(), Role.MODERATOR.name(),Role.USER.name(), Role.GUIDE.name())

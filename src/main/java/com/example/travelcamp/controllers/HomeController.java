@@ -1,6 +1,10 @@
 package com.example.travelcamp.controllers;
 
+import com.example.travelcamp.models.User;
 import com.example.travelcamp.services.TourService;
+import com.example.travelcamp.services.UserService;
+import com.example.travelcamp.util.UserValidator;
+import jakarta.validation.Valid;
 import org.springframework.ui.Model;
 import com.example.travelcamp.enumm.Role;
 import com.example.travelcamp.security.UserAuthSecurity;
@@ -8,22 +12,25 @@ import com.example.travelcamp.services.UserAuthService;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 
 @Controller
 public class HomeController {
 
     private final UserAuthService userAuthService;
-
+    private final UserValidator userValidator;
+    private final UserService userService;
     private final TourService tourService;
 
-
-
-    public HomeController(UserAuthService userAuthService, TourService tourService) {
+    public HomeController(UserAuthService userAuthService, UserValidator userValidator, UserService userService, TourService tourService) {
         this.userAuthService = userAuthService;
+        this.userValidator = userValidator;
+        this.userService = userService;
         this.tourService = tourService;
     }
-
 
     @GetMapping("/index")
     public String nonAuthPersonIndex(){
@@ -50,6 +57,28 @@ public class HomeController {
             return "redirect:/user/index";
         }
         return "index";
+    }
+
+    // При отправке формы спринг положит объект в модель. Если в модели такого объекта не будет, спринг в эту модель объект положит.
+    // При гет-запросе на /registration спринг смотрит, приходит какой-либо объект в качестве запросу по данному адресу,
+    // если нет объекта, то спринг автоматически внедрит аттрибут User
+    @GetMapping("/registration")
+    public String registration (@ModelAttribute("user") User user) {
+        return "registration";
+    }
+
+    @PostMapping("/registration")
+    public String resultRegistration (@ModelAttribute("user") @Valid User user, BindingResult bindingResult) {
+        //Дополнительная валидация на наличие регистрируемого логина и емейл в БД (в дополнение к валидации, указанной в модели Person).
+        // Если пользователь уже существует, валидатор внедрит ошибку в bindingResult
+        userValidator.validate(user, bindingResult);
+        if (bindingResult.hasErrors()) {
+            return "registration";
+        }
+        else {
+            userService.registrationNewUser(user);
+            return "redirect:/authentication";
+        }
     }
 }
 

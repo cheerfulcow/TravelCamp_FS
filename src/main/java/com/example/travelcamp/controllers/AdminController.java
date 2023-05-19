@@ -1,6 +1,8 @@
 package com.example.travelcamp.controllers;
 
+import com.example.travelcamp.enumm.Role;
 import com.example.travelcamp.enumm.TourTypeEnum;
+import com.example.travelcamp.models.User;
 import com.example.travelcamp.models.tours.Tour;
 import com.example.travelcamp.models.tours.TourImage;
 import com.example.travelcamp.security.UserAuthSecurity;
@@ -134,7 +136,6 @@ public class AdminController {
         return "redirect:/admin/tours/info/{id}";
     }
 
-
     //Подробная информация о выбранном туре
     @GetMapping("/tours/info/{id}")
     public String tourInfo(@PathVariable("id") int id, Model model) {
@@ -145,10 +146,39 @@ public class AdminController {
         return "/admin/tourDetailed";
     }
 
+    //Удаление тура
     @GetMapping("/tours/delete/{id}")
     public String tourDelete(@PathVariable("id") long id) {
         tourService.deleteTour(id);
         return "redirect:/admin/index";
+    }
+
+    //Список пользователей
+    @GetMapping("/users")
+    public String usersList(Model model) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        UserAuthSecurity userAuthSecurity = (UserAuthSecurity) authentication.getPrincipal();
+        model.addAttribute("user", userAuthSecurity.getUser());
+        model.addAttribute("users", userService.findAllUsers());
+        model.addAttribute("role", Role.values());
+        return "admin/users";
+    }
+
+    @GetMapping("/users/info/{id}")
+    public String userInfo(@PathVariable("id") long id ,Model model) {
+        model.addAttribute("user", userService.findUserById(id));
+        model.addAttribute("role", Role.values());
+        return "admin/userInfo";
+    }
+
+    @PostMapping("/users/info/{id}")
+    public String userInfoEdit(@PathVariable("id") int id,
+                               @ModelAttribute("role") String role,
+                               Model model) {
+        User user = userService.findUserById(id);
+        user.setRole(role);
+        userService.updateUser(id, user);
+        return "redirect:/admin/users/info/{id}";
     }
 
 

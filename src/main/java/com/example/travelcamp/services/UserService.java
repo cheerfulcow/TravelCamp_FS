@@ -6,7 +6,9 @@ import com.example.travelcamp.repositories.UserRepository;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -34,6 +36,21 @@ private final PasswordEncoder passwordEncoder;
     public User findByEmail (User user) {
         Optional<User> userDB = userRepository.findByEmail(user.getEmail());
         return userDB.orElse(null);
+    }
+
+    public List<User> findAllUsers() {
+        return userRepository.findAll();
+    }
+
+    public User findUserById(long id) {
+        Optional<User> optionalUser = userRepository.findById(id);
+        return optionalUser.orElse(null);
+    }
+
+    @Transactional
+    public void updateUser(int id, User user) {
+        user.setId(id);
+        userRepository.save(user);
     }
 
     public User createNewUser (User user) {

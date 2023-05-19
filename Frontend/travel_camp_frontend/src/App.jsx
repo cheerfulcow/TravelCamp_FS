@@ -61,18 +61,18 @@ export default App;
 
 //   constructor(props) {
 //     super(props);
-//     this.state = {users: []};
+//     this.state = {users.html: []};
 //   }
 
 //   componentDidMount() {
-//     client({method: 'GET', path: '/api/users'}).done(response => {
-//       this.setState({users: response.entity._embedded.users});
+//     client({method: 'GET', path: '/api/users.html'}).done(response => {
+//       this.setState({users.html: response.entity._embedded.users.html});
 //     });
 //   }
 
 //   render() {
 //     return (
-//         <EmployeeList employees={this.state.users}/>
+//         <EmployeeList employees={this.state.users.html}/>
 //     )
 //   }
 // }

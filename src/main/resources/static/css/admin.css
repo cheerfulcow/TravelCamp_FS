@@ -161,6 +161,41 @@ body {
     color: black;
 }
 
-
-
 /*---------------------------*/
+
+
+
+/*--------  users.html  _________*/
+.usersListH4 {
+    margin: 10vw 0 2vw 0;
+    text-align: center;
+}
+
+.usersTable {
+    margin: 0vh auto;
+    color: #ffda9e;
+    text-align: center;
+}
+
+.usersTable a {
+    text-decoration: none;
+    color: inherit;
+}
+
+.usersTable a:hover {
+    text-shadow: 0px 0px 15px #fff5cd;
+}
+
+.usersTable tr, th{
+    color: #ffda9e;
+    font-size: calc(4pt + 1vw);
+}
+
+.usersTableRowHead {
+    text-align: center;
+}
+
+.usersTableColId {
+    width: 12.5%;
+    color: inherit;
+}

@@ -13,7 +13,7 @@ import java.util.Objects;
 public class User {
 
     @Column
-    private @Id @GeneratedValue(strategy = GenerationType.IDENTITY) int id;
+    private @Id @GeneratedValue(strategy = GenerationType.IDENTITY) long id;
 
     @Column(name = "login", nullable = false, columnDefinition = "text",unique = true)
     @NotEmpty(message = "это поле обязательно для заполнения")
@@ -78,11 +78,11 @@ public class User {
         dateTime = LocalDateTime.now();
     }
 
-    public int getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(long id) {
         this.id = id;
     }
 
