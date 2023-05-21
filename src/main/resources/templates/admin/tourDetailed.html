@@ -107,13 +107,13 @@
                     </div>
                                             <div class="carousel-item" th:if="${tour.getTourImagesList().size() > 2}">
                                                 <img th:src="'/img/uploadPath/' + ${tour.getTourImagesList().get(2).getFileName()}">
-                    <!--                        </div>-->
-                    <!--                        <div class="carousel-item" th:if="${tour.getTourImagesList().size() > 3}">-->
-                    <!--                            <img th:src="'/img/uploadPath/' + ${tour.getTourImagesList().get(3).getFileName()}">-->
-                    <!--                        </div>-->
-                    <!--                        <div class="carousel-item" th:if="${tour.getTourImagesList().size() > 4}">-->
-                    <!--                            <img th:src="'/img/uploadPath/' + ${tour.getTourImagesList().get(4).getFileName()}">-->
-                    <!--                        </div>-->
+                                            </div>
+                                            <div class="carousel-item" th:if="${tour.getTourImagesList().size() > 3}">
+                                                <img th:src="'/img/uploadPath/' + ${tour.getTourImagesList().get(3).getFileName()}">
+                                            </div>
+                                            <div class="carousel-item" th:if="${tour.getTourImagesList().size() > 4}">
+                                                <img th:src="'/img/uploadPath/' + ${tour.getTourImagesList().get(4).getFileName()}">
+                                            </div>
                 </div>
                 <!-- Left and right controls -->
                 <a class="carousel-control-prev" href="#demo" data-slide="prev">

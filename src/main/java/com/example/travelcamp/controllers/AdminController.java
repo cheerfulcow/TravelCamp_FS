@@ -1,12 +1,15 @@
 package com.example.travelcamp.controllers;
 
+import com.example.travelcamp.enumm.OrderStatus;
 import com.example.travelcamp.enumm.Role;
 import com.example.travelcamp.enumm.TourTypeEnum;
+import com.example.travelcamp.models.Order;
 import com.example.travelcamp.models.User;
 import com.example.travelcamp.models.tours.Tour;
 import com.example.travelcamp.models.tours.TourImage;
 import com.example.travelcamp.security.UserAuthSecurity;
 import com.example.travelcamp.services.ImageService;
+import com.example.travelcamp.services.OrderService;
 import com.example.travelcamp.services.TourService;
 import com.example.travelcamp.services.UserService;
 import jakarta.validation.Valid;
@@ -22,6 +25,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -35,13 +39,14 @@ public class AdminController {
 
     private final UserService userService;
     private final TourService tourService;
-
     private final ImageService imageService;
+    private final OrderService orderService;
 
-    public AdminController(UserService userService, TourService tourService, ImageService imageService) {
+    public AdminController(UserService userService, TourService tourService, ImageService imageService, OrderService orderService) {
         this.userService = userService;
         this.tourService = tourService;
         this.imageService = imageService;
+        this.orderService = orderService;
     }
 
     @GetMapping("/index")
@@ -164,22 +169,82 @@ public class AdminController {
         return "admin/users";
     }
 
+    //Информация о конкретном пользователе
     @GetMapping("/users/info/{id}")
     public String userInfo(@PathVariable("id") long id ,Model model) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        UserAuthSecurity userAuthSecurity = (UserAuthSecurity) authentication.getPrincipal();
+        model.addAttribute("userAuth", userAuthSecurity.getUser());
         model.addAttribute("user", userService.findUserById(id));
         model.addAttribute("role", Role.values());
+        model.addAttribute("dateTimeFormat", DateTimeFormatter.ofPattern("yyyy-MM-dd"));
         return "admin/userInfo";
     }
 
+    //Для изменения статуса пользователя
     @PostMapping("/users/info/{id}")
-    public String userInfoEdit(@PathVariable("id") int id,
-                               @ModelAttribute("role") String role,
-                               Model model) {
+    public String userInfoEdit(@PathVariable("id") int id, @ModelAttribute("role") String role) {
         User user = userService.findUserById(id);
         user.setRole(role);
         userService.updateUser(id, user);
         return "redirect:/admin/users/info/{id}";
     }
+
+
+//----------------    РАБОТА С ЗАКАЗАМИ   ----------------//
+
+    //Отображение страницы со всеми заказами
+    @GetMapping("/orders")
+    public String showAllOrders(Model model) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        UserAuthSecurity userAuthSecurity = (UserAuthSecurity) authentication.getPrincipal();
+        model.addAttribute("userAuth", userAuthSecurity.getUser());
+        model.addAttribute("orders", orderService.getAllOrders());
+        model.addAttribute("status", OrderStatus.values());
+        model.addAttribute("value_search", "");
+        return "/admin/orders";
+    }
+
+    //Подробная информация о заказе и изменение его статуса
+    @GetMapping("/admin/orders/{id}")
+    public String orderInfo(@PathVariable("id") int id, Model model) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        UserAuthSecurity userAuthSecurity = (UserAuthSecurity) authentication.getPrincipal();
+        model.addAttribute("userAuth", userAuthSecurity.getUser());
+        model.addAttribute("order", orderService.getOrderById(id));
+        model.addAttribute("status", OrderStatus.values());
+        return "/admin/orderInfo";
+    }
+
+    //Изменение статуса заказа на странице с заказами
+    @PostMapping("/admin/orders/{id}")
+    public String ChangeOrderStatus(@ModelAttribute("status") OrderStatus orderStatus,
+                                    @PathVariable("id") int id)
+    {
+        Order order = orderService.getOrderById(id); //получаем объект заказа из БД
+        order.setOrderStatus(orderStatus.name()); //меняем статус на выбранный в селекте
+        orderService.updateOrder(id, order); //обновляем данные заказа в БД
+        return "redirect:/admin/orders/{id}";
+    }
+
+    //Поиск заказов по последним символам
+    @PostMapping("/orders/search")
+    public String orderSearch(@RequestParam("search") String search, Model model){
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        UserAuthSecurity userAuthSecurity = (UserAuthSecurity) authentication.getPrincipal();
+        model.addAttribute("userAuth", userAuthSecurity.getUser());
+        //кладем в модель все заказы
+        model.addAttribute("orders", orderService.getAllOrders());
+        model.addAttribute("search_order", orderService.findOrdersByPartOfNumber(search));
+        //Кладём в модель обратно полученные значения с формы для того, чтобы после отправки формы (произойдёт перезагрузка
+        // страницы) отправить в инпут ранее введённое значение
+        model.addAttribute("value_search", search);
+        return "/admin/orders";
+    }
+
+
+
+
 
 
     // --------------   Controller Private Methods   -------------- //

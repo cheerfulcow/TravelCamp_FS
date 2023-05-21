@@ -1,10 +1,12 @@
 package com.example.travelcamp.models;
 
 import com.example.travelcamp.enumm.Role;
+import com.example.travelcamp.models.tours.Tour;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Objects;
 
@@ -55,7 +57,12 @@ public class User {
     @OneToMany(mappedBy = "user" , fetch = FetchType.LAZY)
     private List<Order> orderList;
 
-    //КОРЗИНА
+    //Для работы с корзиной
+    //@JoinTable - для реализации связи М-М создаётся промежуточная таблица product_cart
+    //@JoinColumn указывает, какие колонки будут в промежуточной таблице. Первой указывается колонка, имеющая отношение к текущему классу("product_id")
+    @ManyToMany()
+    @JoinTable(name="product_cart", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "tour_id"))
+    private List<Tour> tourList;
 
     private LocalDateTime dateTime;
 
@@ -144,6 +151,10 @@ public class User {
 
     public LocalDateTime getDateTime() {
         return dateTime;
+    }
+
+    public String getDateTimeFormatted() {
+        return dateTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
     }
 
     public void setDateTime(LocalDateTime dateTime) {

@@ -15,7 +15,7 @@
 <body>
 
 <!--NavBar section-->
-<div id="navbarHome" class="row">
+<div id="navbarHome">
     <nav class="fixed-top bg-dark py-3 justify-content-around align-items-center" data-bs-theme="dark">
         <div class="row align-items-center justify-content-center px-2">
             <div class="col-md-5 px-4 justify-content-start">
@@ -29,7 +29,7 @@
                 <a href="/tours">Наши туры</a>
             </div>
             <div class="col-md-3 offset-md-0 navLinks ">
-                <div class="adminLogout" th:text="'Вы вошли как '+${user.getRole()}"></div>
+                <div class="adminLogout" th:text="'Вы вошли как '+${userAuth.getRole()}"></div>
                 <div class="adminLogout">
                     <form method="POST" th:action="@{/logout}">
                         <button type="submit" >(выйти)</button>
@@ -50,37 +50,47 @@
 </div>
 <!-------------------------->
 
-<div>
-<h4 class="usersListH4">СПИСОК ПОЛЬЗОВАТЕЛЕЙ</h4>
+<h4 class="usersListH4">ПРОСМОТР ЗАКАЗОВ</h4>
+
+<h3>Поиск заказов</h3>
+<!--th:action - указываем, каким URL-адресом будет обработана наша страница(на какой адрес
+её отправляем, т.е. этот адрес д.б. у соответствующего контролера
+В name указываем имя, по которому контроллер будет принимать введенные значения с поля-->
+<form th:method="POST" th:action="@{/admin/orders/search}">
+    <label for="search">Поиск по номеру заказа</label>
+    <!--  Отправляем по ключу value полученное с формы значение на контроллер и обрабатываем его там-->
+    <input type="text" id="search" name="search" th:value="*{value_search}" width="200px" maxlength="4">
+    <input type="submit" value="Искать">
+    <br>
+</form>
+<hr>
+
+
+<h3>Результат поиска:</h3>
+<!--Тут мы принимаем {search_order}, который приходит к нам из метода AdminКонтроллера, который обрабатывает поисковый запрос-->
+
+<div th:if="(${!value_search.equals('')}) and (${search_order.size()} < 1)">
+    по вашему запросу ничего не найдено :(
+</div>
+<div th:each="orderFinded: ${search_order}">
+    <a th:href="@{/admin/orders/{id}(id=${orderFinded.getId()})}" th:text="${orderFinded.getOrderNumber()}"></a>
+    <hr>
 </div>
 
+<hr>
+<br>
+<h3>Список всех заказов</h3>
+<br>
 
-<div class="row col-12 col-md-11 col-xl-10 usersTable">
-<table class="table table-dark table-striped">
-    <thead>
-    <tr class="usersTableRowHead">
-        <th scope="col" class="usersTableColId"># id</th>
-        <th scope="col">Логин</th>
-        <th scope="col">Дата регистрации</th>
-        <th scope="col">Email</th>
-        <th scope="col">Роль</th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr th:each="user : ${users}">
-        <th scope="row" th:text="${user.getId()}"></th>
-        <td><a th:href="@{/admin/users/info/{id}(id=${user.getId()})}" th:text="${user.getLogin()}"></a></td>
-        <td th:text="${user.getDateTimeFormatted()}"></td>
-        <td th:text="${user.getEmail()}"></td>
-        <td th:text="${user.getRole()}"></td>
-    </tr>
-    </tbody>
-</table>
+<br>
+<div th:each="order : ${orders}">
+    <a th:href="@{/admin/orders/{id}(id=${order.getId()})}" th:text="'Номер заказа: ' + ${order.getOrderNumber()}"></a>
+    <p th:text="'Дата заказа: ' + ${#temporals.format(order.getDateTime(), 'dd-MMM-yyyy')}"></p>
+    <p th:text="'Название тура: ' + ${order.getTours().getTitle()}"></p>
+    <p th:text="'Статус заказа: ' + ${order.getOrderStatus()}"></p>
+    <hr>
+    <br>
 </div>
-
-
-
-
 
 </body>
 </html>

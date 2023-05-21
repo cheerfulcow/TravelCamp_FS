@@ -50,10 +50,13 @@ body {
 
 /* ------ cards ------ */
 
-#cardAdmin {
+#cardAdmin p{
     width: 90vw;
     margin: 0 auto;
+    color: black;
 }
+
+
 
 .buttonCardInfo {
     width: calc(70px + 20vw);
@@ -71,8 +74,9 @@ body {
     color: #ffda9e;
 }
 
-#cardInfoAdmin h5 {
+#cardInfoAdmin h5, p {
     text-align: center;
+    color: black;
 }
 
 .cardInfo {
@@ -110,6 +114,11 @@ body {
     width: 100%;
     padding: 3vw;
     border-radius: 6vw;
+}
+
+.card-body {
+    color: black;
+    text-align: center;
 }
 
 /*----------------------------*/
@@ -169,6 +178,7 @@ body {
 .usersListH4 {
     margin: 10vw 0 2vw 0;
     text-align: center;
+    font-size: calc(8pt + 1vw);
 }
 
 .usersTable {
@@ -199,3 +209,30 @@ body {
     width: 12.5%;
     color: inherit;
 }
+
+/*---------------------------------------*/
+
+
+/*----------  userInfo-------------------*/
+
+.userInfoTable {
+    text-align: left;
+    margin: 0 auto;
+    font-size: calc(4pt + 1vw);
+    padding: 5px;
+}
+
+.UserInfoleftCol {
+    width: 25%;
+}
+
+.userInfoTable input{
+    background-color: #ffda9e;
+}
+
+#roleSelect{
+    margin: 0px;
+    padding: 0;
+}
+
+/*---------------------------------------*/

@@ -29,10 +29,10 @@
                 <a href="/tours">Наши туры</a>
             </div>
             <div class="col-md-3 offset-md-0 navLinks ">
-                <div class="adminLogout" th:text="'Вы вошли как '+${user.getRole()}"></div>
+                <div class="adminLogout" th:text="'Вы вошли как '+${userAuth.getRole()}"></div>
                 <div class="adminLogout">
                     <form method="POST" th:action="@{/logout}">
-                        <button type="submit" >(выйти)</button>
+                        <button type="submit">(выйти)</button>
                     </form>
                 </div>
                 <div class="adminNavSelect">
@@ -50,13 +50,68 @@
 </div>
 <!-------------------------->
 
-<h4 th:text="'ДЕТАЛЬНАЯ ИНФОРМАЦИЯ О ПОЛЬЗОВАТЕЛЕ: ' + ${user.getLogin()}"></h4>
+<h4 th:text="'ДЕТАЛЬНАЯ ИНФОРМАЦИЯ О ПОЛЬЗОВАТЕЛЕ: ' + ${user.getLogin()}" class="usersListH4"></h4>
 
-<div th:each="user : ${users}">
-    Логин пользователя: <a th:href="@{/admin/user/{id}(id=${user.getId()})}" th:text="${user.getLogin()}"></a>
-    <p th:text="'Роль пользователя: ' + ${user.getRole}"></p>
-    <hr>
-    <br>
+
+<div class="row col-12 col-md-10 col-xl-8 userInfoTable">
+    <table class="table table-dark table-striped">
+        <tbody>
+        <tr>
+            <td class="UserInfoleftCol">ID</td>
+            <td th:text="${user.getId()}"></td>
+        </tr>
+        <tr>
+            <td class="UserInfoleftCol">Логин</td>
+            <td th:text="${user.getLogin()}"></td>
+        </tr>
+        <tr>
+            <td class="UserInfoleftCol">Роль</td>
+            <td>
+                <div class="tableDivChangeRole">
+                    <div th:text="${user.getRole()}">121212</div>
+                    <div th:if="${!user.getRole().equals(role[0])}">
+                        <form th:method="post" th:action="@{/admin/users/info/{id}(id=${user.getId()})}"
+                              th:object="${user}">
+                            <select name="role" th:field="*{role}" id="roleSelect">
+                                <option th:each="userRole : ${role}" th:if="${!userRole.equals(role[0])}"
+                                        th:text="${role[userRole]}" th:value="${role[userRole]}"></option>
+                            </select>
+                            <input type="submit" value="Изменить">
+                        </form>
+                    </div>
+                </div>
+            </td>
+        </tr>
+
+        <tr>
+            <td class="UserInfoleftCol">Имя</td>
+            <td th:text="${user.getFirstName()}">12</td>
+        </tr>
+        <tr>
+            <td class="UserInfoleftCol">Email</td>
+            <td th:text="${user.getEmail()}"></td>
+        </tr>
+        <tr>
+            <td class="UserInfoleftCol">Телефон</td>
+            <td th:text="${user.getPhoneNumber()}"></td>
+        </tr>
+        <tr>
+            <td class="UserInfoleftCol">Дата регистрации</td>
+            <td th:text="${user.getDateTimeFormatted()}"></td>
+        </tr>
+        <tr>
+            <td class="UserInfoleftCol">Список заказов</td>
+            <td th:if="${user.getOrderList().size() < 1}">
+                <div>заказы отсутствуют</div>
+            </td>
+            <td th:each="order : ${user.getOrderList()}">
+                <a th:href="" th:text="'Номер заказа: '${order.getOrderNumber()}"> </a>
+                <div th:text="'Статус: '${order.getOrderStatus()}"></div>
+                <hr/>
+            </td>
+        </tr>
+        </tbody>
+    </table>
 </div>
 
 </body>

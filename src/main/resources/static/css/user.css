@@ -1,0 +1,145 @@
+body {
+    background-color: black;
+    font-family: 'Pacifico', cursive;
+}
+
+h4 {
+    text-align: center;
+    color: #ffda9e;
+    margin: 5vh 0 0 0;
+}
+
+/*-------- NavBar --------- */
+
+.logoContainer {
+    text-align: center;
+}
+
+#navbarHome {
+    color: bisque;
+    margin: 0;
+}
+
+#navbarHome a {
+    color: bisque;
+    text-decoration: none;
+    transition: 0.5s;
+}
+
+#navbarHome a:hover {
+    color: inherit;
+    text-decoration: none;
+    text-shadow: 0px 0px 15px #fff5cd;
+
+}
+
+
+.logout {
+    text-align: center;
+    display: inline-block;
+    padding: auto;
+    color: inherit;
+
+}
+
+.logout button:hover {
+    text-shadow: 0px 0px 15px #fff5cd;
+
+}
+
+.logout button {
+    background-color: inherit;
+    border: none;
+    color: inherit;
+    transition: 0.5s
+}
+
+
+/*---------------------------------*/
+
+
+
+/* ------ carousel ------ */
+
+/* Настройка размеров изображения в основной карусели */
+.w-100 {
+    width: 100% !important;
+    height: 88vh;
+}
+/*---------------------------------*/
+
+
+
+/* ------ cards ------ */
+
+
+.card {
+    box-sizing:content-box;
+}
+
+card-img-top img{
+    height: 100px;
+}
+
+#cardUser {
+    width: 90vw;
+    margin: 2vh auto;
+}
+
+.buttonCard {
+    width: 80%;
+    transition: 0.2s;
+}
+
+.buttonCard:hover {
+    transform: scale(1.05);
+}
+
+.cardInfoAdmin {
+    width: 90vw;
+    margin: 5vh auto;
+    color: #ffda9e;
+}
+
+#cardInfoAdmin h5 {
+    text-align: center;
+}
+
+.cardInfo {
+    border-radius: 5vw;
+    background-color: black;
+    padding: 2vh 0;
+}
+
+
+.cardInfo img {
+    width: 80%;
+    border-radius: inherit;
+    margin: 0 auto;
+}
+
+.cardFullDescription {
+    margin: 1vh 10vw;
+    text-align: justify;
+    font-size: 12pt;
+    padding: 1vh 0vw;
+}
+
+.cardFullDescription h4 {
+    margin: 5vw 0 2vh 0;
+    text-align: center;
+}
+
+.carouselContainer {
+    background-color: black;
+    width: 80%;
+    border-radius: 3vw;
+}
+
+.carouselContainer img {
+    width: 100%;
+    padding: 3vw;
+    border-radius: 6vw;
+}
+
+/*----------------------------*/

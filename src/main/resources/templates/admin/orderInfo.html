@@ -15,7 +15,7 @@
 <body>
 
 <!--NavBar section-->
-<div id="navbarHome" class="row">
+<div id="navbarHome">
     <nav class="fixed-top bg-dark py-3 justify-content-around align-items-center" data-bs-theme="dark">
         <div class="row align-items-center justify-content-center px-2">
             <div class="col-md-5 px-4 justify-content-start">
@@ -29,7 +29,7 @@
                 <a href="/tours">Наши туры</a>
             </div>
             <div class="col-md-3 offset-md-0 navLinks ">
-                <div class="adminLogout" th:text="'Вы вошли как '+${user.getRole()}"></div>
+                <div class="adminLogout" th:text="'Вы вошли как '+${userAuth.getRole()}"></div>
                 <div class="adminLogout">
                     <form method="POST" th:action="@{/logout}">
                         <button type="submit" >(выйти)</button>
@@ -50,36 +50,24 @@
 </div>
 <!-------------------------->
 
-<div>
-<h4 class="usersListH4">СПИСОК ПОЛЬЗОВАТЕЛЕЙ</h4>
-</div>
+<h4 class="usersListH4">ДЕТАЛЬНАЯ ИНФОРМАЦИЯ О ЗАКАЗЕ</h4>
 
-
-<div class="row col-12 col-md-11 col-xl-10 usersTable">
-<table class="table table-dark table-striped">
-    <thead>
-    <tr class="usersTableRowHead">
-        <th scope="col" class="usersTableColId"># id</th>
-        <th scope="col">Логин</th>
-        <th scope="col">Дата регистрации</th>
-        <th scope="col">Email</th>
-        <th scope="col">Роль</th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr th:each="user : ${users}">
-        <th scope="row" th:text="${user.getId()}"></th>
-        <td><a th:href="@{/admin/users/info/{id}(id=${user.getId()})}" th:text="${user.getLogin()}"></a></td>
-        <td th:text="${user.getDateTimeFormatted()}"></td>
-        <td th:text="${user.getEmail()}"></td>
-        <td th:text="${user.getRole()}"></td>
-    </tr>
-    </tbody>
-</table>
-</div>
-
-
-
+<form th:method="post" th:action="@{/admin/orders/{id}(id=${order.getId()})}" th:object="${order}">
+    <p th:text="'Номер заказа: ' + ${order.getOrderNumber()}"></p>
+    <p th:text="'Дата заказа: ' + ${#temporals.format(order.getDateTime(), 'dd-MMM-yyyy')}"></p>
+    <p th:text="'Название тура: ' + ${order.getTours().getTitle()}"></p>
+    <p th:text="'Стоимость: ' + ${order.getTotalCost()}"></p>
+    <p th:text="'ID покупателя: ' + ${order.getUser().getId()}"></p>
+    <p th:text="'Логин покупателя: ' + ${order.getUser().getLogin()}"></p>
+    <p th:text="'Статус заказа: ' + ${order.getOrderStatus()}"></p>
+    <label for="status">Изменить статус заказа: </label>
+    <select name="status" th:field="*{orderStatus}" id="status">
+        <div th:each="orderStatus: ${status}">
+            <option th:text="${orderStatus}" th:value="${orderStatus}"></option>
+        </div>
+    </select>
+    <input type="submit" value="Изменить статус">
+</form>
 
 
 </body>

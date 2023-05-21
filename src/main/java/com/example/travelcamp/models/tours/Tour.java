@@ -1,6 +1,7 @@
 package com.example.travelcamp.models.tours;
 
 import com.example.travelcamp.models.Order;
+import com.example.travelcamp.models.User;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
@@ -83,8 +84,13 @@ public class Tour {
     @OneToMany(mappedBy = "tours", fetch = FetchType.LAZY)
     private List<Order> orderList = new ArrayList<>();
 
-    //Добавить корзину
-
+    //Для работы с корзиной
+    //@JoinTable указывает, что для реализации связи М-М создаётся промежуточная таблица product_cart (это класс Cart)
+    //@JoinColumn указывает, какие колонки будут в промежуточной таблице. Первой указывается колонка, имеющая отношение к текущему классу("product_id")
+    //В самой таблице tour при этом новых колонок не добавляется
+    @ManyToMany()
+    @JoinTable(name="tour_cart", joinColumns = @JoinColumn(name = "tour_id"), inverseJoinColumns = @JoinColumn(name = "user_id"))
+    private List<User> userList;
 
     @PrePersist
     private void init() {

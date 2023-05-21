@@ -60,13 +60,13 @@
             <img th:src="'/img/uploadPath/' + ${tour.getTourImagesList()[0].getFileName()}" class="card-img-top"
                  alt="Очень красивая картинка. Была. Просто поверьте нам на слово :) ">
             <div class="card-body">
-                <h5 class="card-title text-center" th:text="${tour.getTitle()}"></h5>
-                <h5 class="card-title text-center" th:text="'Стоимость тура: от ' + ${tour.getPriceSmallGroup()}"></h5>
-                <p class="card-text text-center" th:text="${tour.getDescriptionShort()}"></p>
+                <h5 class="card-title text-center" th:text="${tour.getTitle()}">название</h5>
+                <h5 class="card-title text-center" th:text="'Стоимость тура: от ' + ${tour.getPriceSmallGroup()}">стоимость</h5>
+                <h6 class="card-text text-center" th:text="${tour.getDescriptionShort()}">123</h6>
                 <div class="align-items-center vstack" style="text-align: center">
-                    <a class="btn btn-dark m-2 buttonCard" th:href="@{/admin/tours/info/{id}(id=${tour.getId()})}" role="button">Подробнее о туре</a>
-                    <a class="btn btn-dark m-2 buttonCard" th:href="@{/admin/tours/edit/{id}(id=${tour.getId()})}" role="button">Редактировать тур</a>
-                    <a class="btn btn-danger m-2 buttonCard" th:href="@{/admin/tours/delete/{id}(id=${tour.getId()})}" role="button">Удалить тур</a>
+                    <a class="btn btn-dark m-2 buttonCardInfo" th:href="@{/admin/tours/info/{id}(id=${tour.getId()})}" role="button">Подробнее о туре</a>
+                    <a class="btn btn-dark m-2 buttonCardInfo" th:href="@{/admin/tours/edit/{id}(id=${tour.getId()})}" role="button">Редактировать тур</a>
+                    <a class="btn btn-danger m-2 buttonCardInfo" th:href="@{/admin/tours/delete/{id}(id=${tour.getId()})}" role="button">Удалить тур</a>
                 </div>
 
 <!--                <h5 class="card-title">Параметры маршрута</h5>-->
