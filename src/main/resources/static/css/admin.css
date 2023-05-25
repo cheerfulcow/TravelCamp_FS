@@ -22,8 +22,6 @@ body {
 
 }
 
-
-
 .adminLogout {
     text-align: center;
     display: inline-block;
@@ -69,26 +67,28 @@ body {
 .buttonCardInfo {
     width: calc(70px + 20vw);
     transition: 0.2s;
+    color: #ffda9e!important;
 }
 
 .buttonCardInfo:hover {
     transform: scale(1.05);
-
 }
 
 .cardInfoAdmin {
     width: 90vw;
     margin: 5vh auto;
     color: #ffda9e;
+
 }
 
-.cardInfoAdmin h5, p {
+
+.cardInfoAdmin >h5, >p, >h3 {
     text-align: center;
     color: black;
 }
 
 .cardInfo {
-    border-radius: 5vw;
+    border-radius: 3vw;
     background-color: black;
     padding: 2vh 0;
 }
@@ -101,10 +101,10 @@ body {
 }
 
 .cardFullDescription {
-    margin: 1vh 10vw;
+    margin: 1vw;
     text-align: justify;
-    font-size: 12pt;
-    padding: 1vh 0vw;
+    font-size: 14pt;
+    padding: 1vh;
     color: #ffda9e;
 }
 
@@ -118,6 +118,7 @@ body {
     background-color: black;
     width: 80%;
     border-radius: 3vw;
+    margin: 2vh auto;
 }
 
 .carouselContainer img {
@@ -132,9 +133,6 @@ body {
 
 }
 
-.card-body h5 {
-    color: #ffda9e;
-}
 
 /*----------------------------*/
 

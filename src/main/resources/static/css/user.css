@@ -80,9 +80,7 @@ h4 {
 /* ------ cards ------ */
 
 
-.card {
-    box-sizing:content-box;
-}
+
 
 cardImage {
     width: 3px;
@@ -95,13 +93,15 @@ cardImage {
 }
 
 .buttonCard {
-    width: 60%;
+    width: calc(70px + 20vw);
     transition: 0.2s;
+    color: #ffda9e!important;
 }
 
 .buttonCard:hover {
     transform: scale(1.05);
 }
+
 
 .cardInfoAdmin {
     width: 90vw;
@@ -114,7 +114,7 @@ cardImage {
 }
 
 .cardInfo {
-    border-radius: 5vw;
+    border-radius: 3vw;
     background-color: black;
     padding: 2vh 0;
 }
@@ -161,9 +161,10 @@ cardImage {
 /*------  TourDetailed  ------*/
 
 .cardInfoDetailed {
-    text-align: center;
+    width: 90vw;
+    margin: 5vh auto;
     color: #ffda9e;
-    font-size: calc(6pt + 1vw);
+
 }
 
 .cardInfoDetailed h4{
@@ -198,7 +199,6 @@ cardImage {
 }
 
 #cardInfoAdmin h5, p {
-    text-align: center;
     color: black;
 }
 
@@ -216,21 +216,24 @@ cardImage {
 }
 
 .cardFullDescription {
-    margin: 1vh 10vw;
+    margin: 1vw;
     text-align: justify;
-    font-size: 12pt;
-    padding: 1vh 0vw;
+    font-size: 14pt;
+    padding: 1vh;
+    color: #ffda9e;
 }
 
 .cardFullDescription h4 {
-    margin: 0vw 0 2vh 0;
+    margin: 5vw 0 2vh 0;
     text-align: center;
+    color: #ffda9e;
 }
 
 .carouselContainer {
     background-color: black;
-    width: 60%;
-    border-radius: 2vw;
+    width: 80%;
+    border-radius: 3vw;
+    margin: 2vh auto;
 }
 
 .carouselContainer img {

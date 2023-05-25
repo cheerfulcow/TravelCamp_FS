@@ -7,6 +7,7 @@ import com.example.travelcamp.repositories.TourRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -41,6 +42,7 @@ public class TourService {
     @Transactional
     public void updateTour(long id, Tour tour) {
        tour.setId(id);
+       tour.setDateTime(LocalDateTime.now());
        tourRepository.save(tour);
     }
 

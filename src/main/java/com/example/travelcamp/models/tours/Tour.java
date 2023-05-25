@@ -30,6 +30,7 @@ public class Tour {
     private String descriptionShort;
 
     @Column
+    @Size(max = 500, message = "не более 500 символов")
     private String descriptionFull;
 
     @Column
@@ -97,7 +98,7 @@ public class Tour {
         dateTime = LocalDateTime.now();
     }
 
-    public Tour(String title, String descriptionShort, String descriptionFull, String duration, String distance, String elevation, double priceSmallGroup, double priceLargeGroup, int smallGroupParticipants, int largeGroupParticipants, String tourType, List<TourImage> tourImageList, List<Order> orderList) {
+    public Tour(String title, String descriptionShort, String descriptionFull, String duration, String distance, String elevation, double priceSmallGroup, double priceLargeGroup, int smallGroupParticipants, int largeGroupParticipants, String tourType, List<TourImage> tourImageList, List<Order> orderList, LocalDateTime dateTime) {
         this.title = title;
         this.descriptionShort = descriptionShort;
         this.descriptionFull = descriptionFull;
@@ -111,9 +112,10 @@ public class Tour {
         this.tourType = tourType;
         this.tourImageList = tourImageList;
         this.orderList = orderList;
+        this.dateTime = dateTime;
     }
 
-    public Tour(String title, String descriptionShort, String descriptionFull, String duration, String distance, String elevation, double priceSmallGroup, int largeGroupParticipants, String tourType, List<TourImage> tourImageList, List<Order> orderList) {
+    public Tour(String title, String descriptionShort, String descriptionFull, String duration, String distance, String elevation, double priceSmallGroup, int largeGroupParticipants, String tourType, List<TourImage> tourImageList, List<Order> orderList, LocalDateTime dateTime) {
         this.title = title;
         this.descriptionShort = descriptionShort;
         this.descriptionFull = descriptionFull;
@@ -125,6 +127,7 @@ public class Tour {
         this.tourType = tourType;
         this.tourImageList = tourImageList;
         this.orderList = orderList;
+        this.dateTime = dateTime;
     }
 
     public Tour() {

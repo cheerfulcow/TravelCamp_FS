@@ -32,7 +32,7 @@
                 <div class="adminLogout" th:text="'Вы вошли как '+${user.getRole()}"></div>
                 <div class="adminLogout">
                     <form method="POST" th:action="@{/logout}">
-                        <button type="submit" >(выйти)</button>
+                        <button type="submit">(выйти)</button>
                     </form>
                 </div>
             </div>
@@ -53,78 +53,89 @@
 
 
 <!--------    CARD    -------->
-<div class="row row-cols-1 cardInfoAdmin">
-    <h3 class="card-title text-center" th:text="${tour.getTitle().toUpperCase()}">НАЗВАНИЕ</h3>
-    <h5 class="card-title text-center" th:text="${tour.getDescriptionShort().toLowerCase()}">краткое описание</h5>
-    <div class="card cardInfo">
-        <img th:src="'/img/uploadPath/' + ${tour.getTourImagesList().get(0).getFileName()}"
-             src="/static/img/siteLogo.png" class="card-img-top"
-             alt="Очень красивая картинка. Была. Просто поверьте нам на слово :) ">
-    </div>
-    <div class="card-body">
-        <div class="cardFullDescription " >
-            <p class="card-text col-12 col-xl-8 offset-xl-2" th:text="${tour.getDescriptionFull()}">полное описание</p>
-            <h4 class="card-title">Параметры маршрута</h4>
-            <div class="col-12 col-xl-8 offset-xl-2">
-                <p class="card-text" th:text="'Тип маршрута: ' + ${tour.getTourType().toLowerCase()}">nbg</p>
-                <p class="card-text" th:text="'Длительность: ' + ${tour.getDuration()}">fferf</p>
-                <p class="card-text" th:text="'Дистанция: ' + ${tour.getDistance()}">frfer</p>
-                <p class="card-text" th:text="'Набор высоты: ' + ${tour.getElevation()}">ferferf</p>
-                <p class="card-text"
-                   th:text="'Стоимость ' + ${tour.getPriceSmallGroup()} + ' руб.'">frefer</p>
-<!--                <p class="card-text"-->
-<!--                   th:text="'Стоимость для полной группы (до ' + ${tour.getLargeGroupParticipants()} + ' человек) : ' + ${tour.getPriceLargeGroup()} + ' руб.'">freferf</p>-->
+<div class="cardInfoAdmin">
+    <h3 class="card-title text-center mb-3" th:text="${tour.getTitle().toUpperCase()}">НАЗВАНИЕ</h3>
+    <h4 class="card-title text-center mb-5" th:text="${tour.getDescriptionShort().toLowerCase()}">краткое описание</h4>
+
+    <div class="row justify-content-around align-items-center mb-5">
+        <div class="col-md-6 card cardInfo">
+            <img th:src="'/img/uploadPath/' + ${tour.getTourImagesList().get(0).getFileName()}"
+                 src="/static/img/siteLogo.png" class="card-img-top"
+                 alt="Очень красивая картинка. Была. Просто поверьте нам на слово :) ">
+        </div>
+
+        <div class="col-md-6 card-body">
+            <div class="cardFullDescription">
+                <p class="card-text" th:text="${tour.getDescriptionFull()}">полное
+                    описание</p>
+                <h4 class="card-title m-5">Параметры маршрута</h4>
+                <p class="card-text pb-2" th:text="'Тип маршрута: ' + ${tour.getTourType().toLowerCase()}">пеший</p>
+                <p class="card-text pb-2" th:text="'Длительность: ' + ${tour.getDuration()}">2ч</p>
+                <p class="card-text pb-2" th:text="'Дистанция: ' + ${tour.getDistance()}">10км</p>
+                <p class="card-text pb-2" th:text="'Набор высоты: ' + ${tour.getElevation()}">1200м</p>
+                <p class="card-text pb-2"
+                   th:text="'Максимальное количество человек в группе: ' + ${tour.getLargeGroupParticipants()}">5</p>
+                <h4 class="card-text"
+                    th:text="'Стоимость ' + ${tour.getPriceSmallGroup()} + ' руб.'">Стоимость: 40000 руб.</h4>
+                <!--                <p class="card-text"-->
+                <!--                   th:text="'Стоимость для полной группы (до ' + ${tour.getLargeGroupParticipants()} + ' человек) : ' + ${tour.getPriceLargeGroup()} + ' руб.'">freferf</p>-->
             </div>
         </div>
-        <div class="align-items-center vstack" style="text-align: center">
-            <br><br>
-            <h5 class="cardFullDescription">Галерея</h5>
-            <!--    Карусель    -->
-            <div id="demo" class="carousel slide carouselContainer" data-ride="carousel">
-                <!-- Indicators -->
-                <ul class="carousel-indicators">
-                    <li data-target="#demo" data-slide-to="0" class="active"></li>
-                    <li data-target="#demo" data-slide-to="1"></li>
-                    <li data-target="#demo" data-slide-to="2"></li>
-                    <li data-target="#demo" data-slide-to="3"></li>
-                    <li data-target="#demo" data-slide-to="4"></li>
-                </ul>
-                <!-- The slideshow -->
-                <div class="carousel-inner">
-                    <div class="carousel-item active"
-                         th:if="${tour.getTourImagesList().size() > 0}">
-                        <img th:src="'/img/uploadPath/' + ${tour.getTourImagesList().get(0).getFileName()}"
-                             src="/static/img/siteLogo.png">
-                    </div>
-                    <div class="carousel-item" th:if="${tour.getTourImagesList().size() > 1}">
-                        <img th:src="'/img/uploadPath/' + ${tour.getTourImagesList().get(1).getFileName()}"
-                             src="/static/img/siteLogo.png">
-                    </div>
-                                            <div class="carousel-item" th:if="${tour.getTourImagesList().size() > 2}">
-                                                <img th:src="'/img/uploadPath/' + ${tour.getTourImagesList().get(2).getFileName()}">
-                                            </div>
-                                            <div class="carousel-item" th:if="${tour.getTourImagesList().size() > 3}">
-                                                <img th:src="'/img/uploadPath/' + ${tour.getTourImagesList().get(3).getFileName()}">
-                                            </div>
-                                            <div class="carousel-item" th:if="${tour.getTourImagesList().size() > 4}">
-                                                <img th:src="'/img/uploadPath/' + ${tour.getTourImagesList().get(4).getFileName()}">
-                                            </div>
-                </div>
-                <!-- Left and right controls -->
-                <a class="carousel-control-prev" href="#demo" data-slide="prev">
-                    <span class="carousel-control-prev-icon"></span>
-                </a>
-                <a class="carousel-control-next" href="#demo" data-slide="next">
-                    <span class="carousel-control-next-icon"></span>
-                </a>
+    </div>
+
+    <br>
+    <br>
+    <h3 class="text-center">Галерея</h3>
+    <!--    Карусель    -->
+    <div id="demo" class="col-md-8 carousel slide carouselContainer" data-ride="carousel">
+        <!-- Indicators -->
+        <ul class="carousel-indicators">
+            <li data-target="#demo" data-slide-to="0" class="active"></li>
+            <li data-target="#demo" data-slide-to="1"></li>
+            <li data-target="#demo" data-slide-to="2"></li>
+            <li data-target="#demo" data-slide-to="3"></li>
+            <li data-target="#demo" data-slide-to="4"></li>
+        </ul>
+        <!-- The slideshow -->
+        <div class="carousel-inner">
+            <div class="carousel-item active"
+                 th:if="${tour.getTourImagesList().size() > 0}">
+                <img th:src="'/img/uploadPath/' + ${tour.getTourImagesList().get(0).getFileName()}"
+                     src="/static/img/siteLogo.png">
+            </div>
+            <div class="carousel-item" th:if="${tour.getTourImagesList().size() > 1}">
+                <img th:src="'/img/uploadPath/' + ${tour.getTourImagesList().get(1).getFileName()}"
+                     src="/static/img/siteLogo.png">
+            </div>
+            <div class="carousel-item" th:if="${tour.getTourImagesList().size() > 2}">
+                <img th:src="'/img/uploadPath/' + ${tour.getTourImagesList().get(2).getFileName()}">
+            </div>
+            <div class="carousel-item" th:if="${tour.getTourImagesList().size() > 3}">
+                <img th:src="'/img/uploadPath/' + ${tour.getTourImagesList().get(3).getFileName()}">
+            </div>
+            <div class="carousel-item" th:if="${tour.getTourImagesList().size() > 4}">
+                <img th:src="'/img/uploadPath/' + ${tour.getTourImagesList().get(4).getFileName()}">
             </div>
         </div>
-            <a class="btn btn-dark m-2 buttonCardInfo" th:href="@{/admin/tours/edit/{id}(id=${tour.getId()})}"
-               role="button">Редактировать тур</a>
-            <a class="btn btn-danger m-2 buttonCardInfo" th:href="@{/admin/tours/delete/{id}(id=${tour.getId()})}"
-               role="button">Удалить тур</a>
+        <!-- Left and right controls -->
+        <a class="carousel-control-prev" href="#demo" data-slide="prev">
+            <span class="carousel-control-prev-icon"></span>
+        </a>
+        <a class="carousel-control-next" href="#demo" data-slide="next">
+            <span class="carousel-control-next-icon"></span>
+        </a>
     </div>
 </div>
+
+<div class="text-center ">
+    <a class="btn btn-dark m-3 buttonCardInfo" th:href="@{/admin/tours/edit/{id}(id=${tour.getId()})}"
+       role="button">Редактировать тур</a>
+    <a class="btn btn-danger m-3 buttonCardInfo" th:href="@{/admin/tours/delete/{id}(id=${tour.getId()})}"
+       role="button">Удалить тур</a>
 </div>
+
+<div class="mb-7-vh"></div>
+
+
 </body>
 </html>
