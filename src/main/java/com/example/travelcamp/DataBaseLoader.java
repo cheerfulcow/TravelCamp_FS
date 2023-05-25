@@ -43,7 +43,6 @@ public class DataBaseLoader implements CommandLineRunner {
         String emailAdmin = "TravelCamp@yandex.ru";
         String passwordAdmin = "admin";
         String passwordAdminEncoded = passwordEncoder.encode(passwordAdmin);
-        System.out.println(passwordAdminEncoded);
         String phoneAdmin = "+70000000000";
         String firstnameAdmin = "Админ";
         String secondnameAdmin = "Админович";

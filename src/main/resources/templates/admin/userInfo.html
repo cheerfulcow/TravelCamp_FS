@@ -18,32 +18,27 @@
 <div id="navbarHome">
     <nav class="fixed-top bg-dark py-3 justify-content-around align-items-center" data-bs-theme="dark">
         <div class="row align-items-center justify-content-center px-2">
-            <div class="col-md-5 px-4 justify-content-start">
+            <div class=" col-md-3 px-4 justify-content-start">
                 <img src="/static/img/siteLogo.png" id="siteLogo" th:src="@{/img/siteLogo.png}">
-                <a href="/index" id="logoText">TravelCamp</a>
+                <a href="/admin/index" id="logoText">TravelCamp</a>
             </div>
-            <div class="col-md-2 navLinks">
-                <a href="/about">О нас</a>
-            </div>
-            <div class="col-md-2 navLinks">
-                <a href="/tours">Наши туры</a>
-            </div>
-            <div class="col-md-3 offset-md-0 navLinks ">
-                <div class="adminLogout" th:text="'Вы вошли как '+${userAuth.getRole()}"></div>
+            <div class=" col-md-4 navLinks ">
+                <div class="adminLogout" th:text="'Вы вошли как '+${user.getRole()}"></div>
                 <div class="adminLogout">
                     <form method="POST" th:action="@{/logout}">
-                        <button type="submit">(выйти)</button>
+                        <button type="submit" >(выйти)</button>
                     </form>
                 </div>
-                <div class="adminNavSelect">
-                    <select onchange="window.location.href=this.options[this.selectedIndex].value" class="form-select"
-                            aria-label="Default select example">
-                        <option selected disabled>Выберите действие</option>
-                        <option value="/admin/orders">Просмотр заказов</option>
-                        <option value="/admin/tours/add">Добавить новый тур</option>
-                        <option value="/admin/users">Просмотр пользователей</option>
-                    </select>
-                </div>
+            </div>
+            <div class=" col-md-3 adminNavSelect">
+                <select onchange="window.location.href=this.options[this.selectedIndex].value" class="form-select"
+                        aria-label="Default select example">
+                    <option selected disabled>Выберите действие</option>
+                    <option value="/admin/orders">Просмотр заказов</option>
+                    <option value="/admin/tours/add">Добавить новый тур</option>
+                    <option value="/admin/index#ourTours">Просмотр туров</option>
+                    <option value="/admin/users">Просмотр пользователей</option>
+                </select>
             </div>
         </div>
     </nav>
@@ -53,23 +48,25 @@
 <h4 th:text="'ДЕТАЛЬНАЯ ИНФОРМАЦИЯ О ПОЛЬЗОВАТЕЛЕ: ' + ${user.getLogin()}" class="usersListH4"></h4>
 
 
-<div class="row col-12 col-md-10 col-xl-8 userInfoTable">
-    <table class="table table-dark table-striped">
+<div class="row col-12 col-md-10 col-xl-8 userInfoTable mb-7-vh">
+    <table class="table table-dark table-striped ">
         <tbody>
         <tr>
             <td class="UserInfoleftCol">ID</td>
             <td th:text="${user.getId()}"></td>
         </tr>
+
         <tr>
             <td class="UserInfoleftCol">Логин</td>
             <td th:text="${user.getLogin()}"></td>
         </tr>
+
         <tr>
             <td class="UserInfoleftCol">Роль</td>
             <td>
                 <div class="tableDivChangeRole">
                     <div th:text="${user.getRole()}">121212</div>
-                    <div th:if="${!user.getRole().equals(role[0])}">
+                    <div th:if="${!user.getRole().equals(role[0].name())}">
                         <form th:method="post" th:action="@{/admin/users/info/{id}(id=${user.getId()})}"
                               th:object="${user}">
                             <select name="role" th:field="*{role}" id="roleSelect">
@@ -87,28 +84,35 @@
             <td class="UserInfoleftCol">Имя</td>
             <td th:text="${user.getFirstName()}">12</td>
         </tr>
+
         <tr>
             <td class="UserInfoleftCol">Email</td>
             <td th:text="${user.getEmail()}"></td>
         </tr>
+
         <tr>
             <td class="UserInfoleftCol">Телефон</td>
             <td th:text="${user.getPhoneNumber()}"></td>
         </tr>
+
         <tr>
             <td class="UserInfoleftCol">Дата регистрации</td>
             <td th:text="${user.getDateTimeFormatted()}"></td>
         </tr>
+
         <tr>
             <td class="UserInfoleftCol">Список заказов</td>
             <td th:if="${user.getOrderList().size() < 1}">
                 <div>заказы отсутствуют</div>
             </td>
-            <td th:each="order : ${user.getOrderList()}">
-                <a th:href="" th:text="'Номер заказа: '${order.getOrderNumber()}"> </a>
-                <div th:text="'Статус: '${order.getOrderStatus()}"></div>
-                <hr/>
-            </td>
+            <td th:if="${user.getOrderList().size() > 0}">
+        <div th:each="order : ${user.getOrderList()}" class="mx-3 px-3">
+            <a th:href="@{/admin/orders/{id}(id=${order.getId()})}"
+               th:text="'Номер заказа: ' + ${order.getOrderNumber()}"> </a>
+            <div th:text="'Статус: ' + ${order.getOrderStatus().toLowerCase()}"></div>
+            <hr/>
+        </div>
+        </td>
         </tr>
         </tbody>
     </table>

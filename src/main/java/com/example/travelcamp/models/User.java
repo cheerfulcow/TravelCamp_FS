@@ -61,7 +61,7 @@ public class User {
     //@JoinTable - для реализации связи М-М создаётся промежуточная таблица product_cart
     //@JoinColumn указывает, какие колонки будут в промежуточной таблице. Первой указывается колонка, имеющая отношение к текущему классу("product_id")
     @ManyToMany()
-    @JoinTable(name="product_cart", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "tour_id"))
+    @JoinTable(name="tour_cart", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "tour_id"))
     private List<Tour> tourList;
 
     private LocalDateTime dateTime;

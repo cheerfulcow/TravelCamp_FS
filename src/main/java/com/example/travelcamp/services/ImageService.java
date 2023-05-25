@@ -8,7 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional(readOnly = true)
 public class ImageService {
 
-    public final ImageRepository imageRepository;
+    private final ImageRepository imageRepository;
 
     public ImageService(ImageRepository imageRepository) {
         this.imageRepository = imageRepository;

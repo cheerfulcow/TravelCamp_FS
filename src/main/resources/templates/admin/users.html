@@ -15,35 +15,30 @@
 <body>
 
 <!--NavBar section-->
-<div id="navbarHome" class="row">
+<div id="navbarHome">
     <nav class="fixed-top bg-dark py-3 justify-content-around align-items-center" data-bs-theme="dark">
         <div class="row align-items-center justify-content-center px-2">
-            <div class="col-md-5 px-4 justify-content-start">
+            <div class=" col-md-3 px-4 justify-content-start">
                 <img src="/static/img/siteLogo.png" id="siteLogo" th:src="@{/img/siteLogo.png}">
-                <a href="/index" id="logoText">TravelCamp</a>
+                <a href="/admin/index" id="logoText">TravelCamp</a>
             </div>
-            <div class="col-md-2 navLinks">
-                <a href="/about">О нас</a>
-            </div>
-            <div class="col-md-2 navLinks">
-                <a href="/tours">Наши туры</a>
-            </div>
-            <div class="col-md-3 offset-md-0 navLinks ">
+            <div class=" col-md-4 navLinks ">
                 <div class="adminLogout" th:text="'Вы вошли как '+${user.getRole()}"></div>
                 <div class="adminLogout">
                     <form method="POST" th:action="@{/logout}">
                         <button type="submit" >(выйти)</button>
                     </form>
                 </div>
-                <div class="adminNavSelect">
-                    <select onchange="window.location.href=this.options[this.selectedIndex].value" class="form-select"
-                            aria-label="Default select example">
-                        <option selected disabled>Выберите действие</option>
-                        <option value="/admin/orders">Просмотр заказов</option>
-                        <option value="/admin/tours/add">Добавить новый тур</option>
-                        <option value="/admin/users">Просмотр пользователей</option>
-                    </select>
-                </div>
+            </div>
+            <div class=" col-md-3 adminNavSelect">
+                <select onchange="window.location.href=this.options[this.selectedIndex].value" class="form-select"
+                        aria-label="Default select example">
+                    <option selected disabled>Выберите действие</option>
+                    <option value="/admin/orders">Просмотр заказов</option>
+                    <option value="/admin/tours/add">Добавить новый тур</option>
+                    <option value="/admin/index#ourTours">Просмотр туров</option>
+                    <option value="/admin/users">Просмотр пользователей</option>
+                </select>
             </div>
         </div>
     </nav>

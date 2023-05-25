@@ -3,10 +3,15 @@ body {
     font-family: 'Pacifico', cursive;
 }
 
+body p {
+    background-color: black;
+    font-family: 'Pacifico', cursive;
+    color: #ffda9e;
+}
+
 h4 {
     text-align: center;
     color: #ffda9e;
-    margin: 5vh 0 0 0;
 }
 
 /*-------- NavBar --------- */
@@ -68,7 +73,9 @@ h4 {
 }
 /*---------------------------------*/
 
-
+#ourTours {
+    margin: 5vh 0 0 0;
+}
 
 /* ------ cards ------ */
 
@@ -77,9 +84,10 @@ h4 {
     box-sizing:content-box;
 }
 
-card-img-top img{
-    height: 100px;
+cardImage {
+    width: 3px;
 }
+
 
 #cardUser {
     width: 90vw;
@@ -87,7 +95,7 @@ card-img-top img{
 }
 
 .buttonCard {
-    width: 80%;
+    width: 60%;
     transition: 0.2s;
 }
 
@@ -126,7 +134,7 @@ card-img-top img{
 }
 
 .cardFullDescription h4 {
-    margin: 5vw 0 2vh 0;
+    margin: 0 0 2vh 0;
     text-align: center;
 }
 
@@ -143,3 +151,220 @@ card-img-top img{
 }
 
 /*----------------------------*/
+
+/*--------- orders -----------*/
+
+.marginCenter {
+    margin: 2vh auto;
+}
+
+/*------  TourDetailed  ------*/
+
+.cardInfoDetailed {
+    text-align: center;
+    color: #ffda9e;
+    font-size: calc(6pt + 1vw);
+}
+
+.cardInfoDetailed h4{
+    text-align: center;
+    color: #ffda9e;
+    font-size: calc(10pt + 1vw);
+    margin: 5vh 0 0 0;
+}
+
+#cardAdmin p{
+    width: 90vw;
+    margin: 0 auto;
+    color: black;
+}
+
+
+
+.buttonCardInfo {
+    width: calc(70px + 20vw);
+    transition: 0.2s;
+}
+
+.buttonCardInfo:hover {
+    transform: scale(1.05);
+
+}
+
+.cardInfoAdmin {
+    width: 90vw;
+    margin: 5vh auto;
+    color: #ffda9e;
+}
+
+#cardInfoAdmin h5, p {
+    text-align: center;
+    color: black;
+}
+
+.cardInfoImg {
+    border-radius: 2vw;
+    background-color: black;
+    padding: 2vh 0;
+}
+
+
+.cardInfoImg img {
+    width: 60%;
+    border-radius: inherit;
+    margin: 0 auto;
+}
+
+.cardFullDescription {
+    margin: 1vh 10vw;
+    text-align: justify;
+    font-size: 12pt;
+    padding: 1vh 0vw;
+}
+
+.cardFullDescription h4 {
+    margin: 0vw 0 2vh 0;
+    text-align: center;
+}
+
+.carouselContainer {
+    background-color: black;
+    width: 60%;
+    border-radius: 2vw;
+}
+
+.carouselContainer img {
+    width: 100%;
+    padding: 3vw;
+    border-radius: 6vw;
+}
+
+.cardBodyDetailed {
+    color: #ffda9e;
+    text-align: center;
+}
+
+.divDescriprion >p{
+    color: #ffda9e;
+}
+
+.tourDetailedBackButton {
+    text-align: center;
+    margin: -2vh auto 5vh 0;
+    color: #ffda9e;
+}
+
+.tourDetailedBackButton a {
+    width: 60%;
+
+}
+
+.userCardFullDescription {
+    margin: 0px;
+    padding: 0px;
+    color: #ffda9e;
+}
+
+.userCardFullDescription >p{
+    color: #ffda9e;
+}
+
+/*------------------------------*/
+
+
+/*--------cart----------*/
+
+.cartItem {
+    margin: 2vh auto;
+}
+
+
+.dateInput {
+    width: 100%;
+}
+
+.cartCardButton {
+    width: 100%;
+    height: 8vh;
+    line-height: 8vh;
+    font-family: 'Pacifico', cursive;
+    font-size: 14pt;
+    color: #ffda9e;
+}
+
+
+.cartCardTourInfo {
+    align-items: center;
+}
+
+.textAlignCenter {
+    text-align: center;
+}
+
+.gap3vh {
+    margin: 3vh;
+      }
+
+.mx-7-vh {
+    margin: 0 auto 7vh auto;
+}
+
+.orderButton {
+    margin: 10vh auto;
+}
+
+.mx-12-vh {
+    margin: 12vh auto 12vh auto;
+}
+
+/*-------------------------------*/
+
+#aboutUs {
+    margin: 10vh auto 2vh auto;
+    color: #ffda9e;
+}
+
+#contacts {
+    margin: 10vh auto;
+}
+
+#contacts p{
+    color: #ffda9e;
+    margin: 2vh 0;
+}
+
+
+/*-----------  footer  -----------*/
+
+#footer p {
+    margin: 1vw 0;
+    font-size: calc(5pt + 0.6vw);
+    text-align: center;
+    color: #ffda9e;
+}
+
+#footerLogo img{
+    margin: 3vh;
+    width: 10vw;
+    border-radius: 50%;
+    padding: 0 0 0 2vw;
+}
+
+#underTravel {
+    font-size: calc(5pt + 0.8vw);
+}
+
+
+#footerTravelCamp{
+    font-size: calc(5pt + 1.2vw);
+    padding: 0;
+    margin: 2vw 0;
+    text-align: left;
+}
+
+#footerTravelCamp #footerTextLogo {
+    font-size: calc(10pt + 0.8vw);
+}
+
+
+

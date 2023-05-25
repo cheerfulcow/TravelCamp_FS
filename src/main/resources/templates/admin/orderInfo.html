@@ -18,32 +18,27 @@
 <div id="navbarHome">
     <nav class="fixed-top bg-dark py-3 justify-content-around align-items-center" data-bs-theme="dark">
         <div class="row align-items-center justify-content-center px-2">
-            <div class="col-md-5 px-4 justify-content-start">
+            <div class=" col-md-3 px-4 justify-content-start">
                 <img src="/static/img/siteLogo.png" id="siteLogo" th:src="@{/img/siteLogo.png}">
-                <a href="/index" id="logoText">TravelCamp</a>
+                <a href="/admin/index" id="logoText">TravelCamp</a>
             </div>
-            <div class="col-md-2 navLinks">
-                <a href="/about">О нас</a>
-            </div>
-            <div class="col-md-2 navLinks">
-                <a href="/tours">Наши туры</a>
-            </div>
-            <div class="col-md-3 offset-md-0 navLinks ">
+            <div class=" col-md-4 navLinks ">
                 <div class="adminLogout" th:text="'Вы вошли как '+${userAuth.getRole()}"></div>
                 <div class="adminLogout">
                     <form method="POST" th:action="@{/logout}">
                         <button type="submit" >(выйти)</button>
                     </form>
                 </div>
-                <div class="adminNavSelect">
-                    <select onchange="window.location.href=this.options[this.selectedIndex].value" class="form-select"
-                            aria-label="Default select example">
-                        <option selected disabled>Выберите действие</option>
-                        <option value="/admin/orders">Просмотр заказов</option>
-                        <option value="/admin/tours/add">Добавить новый тур</option>
-                        <option value="/admin/users">Просмотр пользователей</option>
-                    </select>
-                </div>
+            </div>
+            <div class=" col-md-3 adminNavSelect">
+                <select onchange="window.location.href=this.options[this.selectedIndex].value" class="form-select"
+                        aria-label="Default select example">
+                    <option selected disabled>Выберите действие</option>
+                    <option value="/admin/orders">Просмотр заказов</option>
+                    <option value="/admin/tours/add">Добавить новый тур</option>
+                    <option value="/admin/index#ourTours">Просмотр туров</option>
+                    <option value="/admin/users">Просмотр пользователей</option>
+                </select>
             </div>
         </div>
     </nav>
@@ -52,23 +47,75 @@
 
 <h4 class="usersListH4">ДЕТАЛЬНАЯ ИНФОРМАЦИЯ О ЗАКАЗЕ</h4>
 
-<form th:method="post" th:action="@{/admin/orders/{id}(id=${order.getId()})}" th:object="${order}">
-    <p th:text="'Номер заказа: ' + ${order.getOrderNumber()}"></p>
-    <p th:text="'Дата заказа: ' + ${#temporals.format(order.getDateTime(), 'dd-MMM-yyyy')}"></p>
-    <p th:text="'Название тура: ' + ${order.getTours().getTitle()}"></p>
-    <p th:text="'Стоимость: ' + ${order.getTotalCost()}"></p>
-    <p th:text="'ID покупателя: ' + ${order.getUser().getId()}"></p>
-    <p th:text="'Логин покупателя: ' + ${order.getUser().getLogin()}"></p>
-    <p th:text="'Статус заказа: ' + ${order.getOrderStatus()}"></p>
-    <label for="status">Изменить статус заказа: </label>
-    <select name="status" th:field="*{orderStatus}" id="status">
-        <div th:each="orderStatus: ${status}">
-            <option th:text="${orderStatus}" th:value="${orderStatus}"></option>
-        </div>
-    </select>
-    <input type="submit" value="Изменить статус">
-</form>
+<div class="row col-12 col-md-11 col-xl-10 userInfoTable mb-7-vh">
+    <table class="table table-dark table-striped ">
+        <tbody class="orderTable">
+        <tr >
+            <td class="UserInfoleftCol ">номер заказа</td>
+            <td th:text="${order.getOrderNumber()}">12345</td>
+        </tr>
 
+        <tr>
+            <td class="UserInfoleftCol">дата заказа</td>
+            <td th:text="${order.getDateTimeFormatted()}"></td>
+        </tr>
+
+        <tr>
+            <td class="UserInfoleftCol">клиент</td>
+            <td >
+                <a th:href="@{/admin/users/info/{id}(id=${order.getUser().getId()})}" th:text="${order.getUser().getLogin()}"></a>
+            </td>
+        </tr>
+
+        <tr>
+            <td class="UserInfoleftCol">имя клиента</td>
+            <td th:text="${order.getUser().getFirstName()}">12</td>
+        </tr>
+
+        <tr>
+            <td class="UserInfoleftCol">email клиента</td>
+            <td th:text="${order.getUser().getEmail()}"></td>
+        </tr>
+
+        <tr>
+            <td class="UserInfoleftCol">телефон клиента</td>
+            <td th:text="${order.getUser().getPhoneNumber()}"></td>
+        </tr>
+
+        <tr>
+            <td class="UserInfoleftCol">название тура</td>
+            <td >
+                <a th:href="@{/admin/tours/info/{id}(id=${order.getTours().getId()})}" th:text="${order.getTours().getTitle()}"></a>
+            </td>
+        </tr>
+
+        <tr>
+            <td class="UserInfoleftCol">дата бронирования тура</td>
+            <td th:text="${order.getTourDate()}">дата</td>
+        </tr>
+
+        <tr>
+            <td class="UserInfoleftCol">статус заказа</td>
+            <td >
+                <div th:text="${order.getOrderStatus()}">статус заказа</div>
+                <div >
+                    <form th:method="post" th:action="@{/admin/orders/{id}(id=${order.getId()})}"
+                          th:object="${order}">
+                        <select id="status" name="status" th:selected="${order.getOrderStatus()}" th:width="100px">
+                            <option th:each="statusName : ${status}"
+                                    th:text="${statusName.name()}" th:value="${statusName.name()}">статус
+                            </option>
+                        </select>
+                        <input type="submit" value="Изменить">
+                    </form>
+                </div>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+
+<div class="mx-7-vh"></div>
 
 </body>
 </html>

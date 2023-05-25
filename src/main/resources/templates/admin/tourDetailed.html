@@ -24,32 +24,27 @@
 <div id="navbarHome">
     <nav class="fixed-top bg-dark py-3 justify-content-around align-items-center" data-bs-theme="dark">
         <div class="row align-items-center justify-content-center px-2">
-            <div class="col-md-5 px-4 justify-content-start">
+            <div class=" col-md-3 px-4 justify-content-start">
                 <img src="/static/img/siteLogo.png" id="siteLogo" th:src="@{/img/siteLogo.png}">
-                <a href="/index" id="logoText">TravelCamp</a>
+                <a href="/admin/index" id="logoText">TravelCamp</a>
             </div>
-            <div class="col-md-2 navLinks">
-                <a href="/about">О нас</a>
-            </div>
-            <div class="col-md-2 navLinks">
-                <a href="/tours">Наши туры</a>
-            </div>
-            <div class="col-md-3 offset-md-0 navLinks ">
+            <div class=" col-md-4 navLinks ">
                 <div class="adminLogout" th:text="'Вы вошли как '+${user.getRole()}"></div>
                 <div class="adminLogout">
                     <form method="POST" th:action="@{/logout}">
-                        <button type="submit">(выйти)</button>
+                        <button type="submit" >(выйти)</button>
                     </form>
                 </div>
-                <div class="adminNavSelect">
-                    <select onchange="window.location.href=this.options[this.selectedIndex].value" class="form-select"
-                            aria-label="Default select example">
-                        <option selected disabled>Выберите действие</option>
-                        <option value="/admin/orders">Просмотр заказов</option>
-                        <option value="/admin/tours/add">Добавить новый тур</option>
-                        <option value="/admin/users">Просмотр пользователей</option>
-                    </select>
-                </div>
+            </div>
+            <div class=" col-md-3 adminNavSelect">
+                <select onchange="window.location.href=this.options[this.selectedIndex].value" class="form-select"
+                        aria-label="Default select example">
+                    <option selected disabled>Выберите действие</option>
+                    <option value="/admin/orders">Просмотр заказов</option>
+                    <option value="/admin/tours/add">Добавить новый тур</option>
+                    <option value="/admin/index#ourTours">Просмотр туров</option>
+                    <option value="/admin/users">Просмотр пользователей</option>
+                </select>
             </div>
         </div>
     </nav>
@@ -72,18 +67,18 @@
             <h4 class="card-title">Параметры маршрута</h4>
             <div class="col-12 col-xl-8 offset-xl-2">
                 <p class="card-text" th:text="'Тип маршрута: ' + ${tour.getTourType().toLowerCase()}">nbg</p>
-                <p class="card-text" th:text="'Длительность: ' + ${tour.getDuration()}"></p>
-                <p class="card-text" th:text="'Дистанция: ' + ${tour.getDistance()}"></p>
-                <p class="card-text" th:text="'Набор высоты: ' + ${tour.getElevation()}"></p>
+                <p class="card-text" th:text="'Длительность: ' + ${tour.getDuration()}">fferf</p>
+                <p class="card-text" th:text="'Дистанция: ' + ${tour.getDistance()}">frfer</p>
+                <p class="card-text" th:text="'Набор высоты: ' + ${tour.getElevation()}">ferferf</p>
                 <p class="card-text"
-                   th:text="'Стоимость для малой группы (до ' + ${tour.getSmallGroupParticipants()} + ' человек) : ' + ${tour.getPriceSmallGroup()} + ' руб.'"></p>
-                <p class="card-text"
-                   th:text="'Стоимость для полной группы (до ' + ${tour.getLargeGroupParticipants()} + ' человек) : ' + ${tour.getPriceLargeGroup()} + ' руб.'"></p>
+                   th:text="'Стоимость ' + ${tour.getPriceSmallGroup()} + ' руб.'">frefer</p>
+<!--                <p class="card-text"-->
+<!--                   th:text="'Стоимость для полной группы (до ' + ${tour.getLargeGroupParticipants()} + ' человек) : ' + ${tour.getPriceLargeGroup()} + ' руб.'">freferf</p>-->
             </div>
         </div>
         <div class="align-items-center vstack" style="text-align: center">
             <br><br>
-            <h5>Галерея</h5>
+            <h5 class="cardFullDescription">Галерея</h5>
             <!--    Карусель    -->
             <div id="demo" class="carousel slide carouselContainer" data-ride="carousel">
                 <!-- Indicators -->

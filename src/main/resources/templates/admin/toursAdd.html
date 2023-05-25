@@ -19,32 +19,27 @@
 <div id="navbarHome">
     <nav class="fixed-top bg-dark py-3 justify-content-around align-items-center" data-bs-theme="dark">
         <div class="row align-items-center justify-content-center px-2">
-            <div class="col-md-5 px-4 justify-content-start">
+            <div class=" col-md-3 px-4 justify-content-start">
                 <img src="/static/img/siteLogo.png" id="siteLogo" th:src="@{/img/siteLogo.png}">
-                <a href="/index" id="logoText">TravelCamp</a>
+                <a href="/admin/index" id="logoText">TravelCamp</a>
             </div>
-            <div class="col-md-2 navLinks">
-                <a href="/about">О нас</a>
-            </div>
-            <div class="col-md-2 navLinks">
-                <a href="/tours">Наши туры</a>
-            </div>
-            <div class="col-md-3 offset-md-0 navLinks ">
+            <div class=" col-md-4 navLinks ">
                 <div class="adminLogout" th:text="'Вы вошли как '+${user.getRole()}"></div>
                 <div class="adminLogout">
                     <form method="POST" th:action="@{/logout}">
-                        <button type="submit">(выйти)</button>
+                        <button type="submit" >(выйти)</button>
                     </form>
                 </div>
-                <div class="adminNavSelect">
-                    <select onchange="window.location.href=this.options[this.selectedIndex].value" class="form-select"
-                            aria-label="Default select example">
-                        <option selected disabled>Выберите действие</option>
-                        <option value="/admin/orders">Просмотр заказов</option>
-                        <option value="/admin/tours/add">Добавить новый тур</option>
-                        <option value="/admin/users">Просмотр пользователей</option>
-                    </select>
-                </div>
+            </div>
+            <div class=" col-md-3 adminNavSelect">
+                <select onchange="window.location.href=this.options[this.selectedIndex].value" class="form-select"
+                        aria-label="Default select example">
+                    <option selected disabled>Выберите действие</option>
+                    <option value="/admin/orders">Просмотр заказов</option>
+                    <option value="/admin/tours/add">Добавить новый тур</option>
+                    <option value="/admin/index#ourTours">Просмотр туров</option>
+                    <option value="/admin/users">Просмотр пользователей</option>
+                </select>
             </div>
         </div>
     </nav>
@@ -60,9 +55,9 @@
     <form th:method="POST" th:action="@{/admin/tours/add}" th:object="${tour}" enctype="multipart/form-data">
 
         <div class="form-floating mb-3">
-            <input type="text" th:field="*{title}" class="form-control" id="floatingInput"
+            <input type="text" th:field="*{title}" class="form-control" id="floatingTextarea"
                    placeholder="например: К облакам!">
-            <label for="floatingInput">название тура:</label>
+            <label for="floatingTextarea">название тура:</label>
             <div style="color:red" th:if="${#fields.hasErrors('title')}" th:errors="*{title}"></div>
         </div>
 
@@ -85,7 +80,7 @@
             <select name="tourType" th:field="*{tourType}" class="form-select" id="floatingSelect"
                     aria-label="Floating label select example">
                 <div th:each="element: ${tourType}">
-                    <option th:text="${element.name().toLowerCase()}" th:value="${element.name()}"></option>
+                    <option th:text="${element.name().toLowerCase()}" th:value="${element.name()}">пеший</option>
                 </div>
             </select>
             <label for="floatingSelect">тип тура: </label>
@@ -113,13 +108,13 @@
             <div style="color:red" th:if="${#fields.hasErrors('elevation')}" th:errors="*{elevation}"></div>
         </div>
 
-        <div class="form-floating mb-3">
-            <input type="number" th:field="*{smallGroupParticipants}" placeholder="например: 3" class="form-control"
-                   id="floatingInput">
-            <label for="floatingInput">количество участников в малой группе:</label>
-            <div style="color:red" th:if="${#fields.hasErrors('smallGroupParticipants')}"
-                 th:errors="*{smallGroupParticipants}"></div>
-        </div>
+<!--        <div class="form-floating mb-3">-->
+<!--            <input type="number" th:field="*{smallGroupParticipants}" placeholder="например: 3" class="form-control"-->
+<!--                   id="floatingInput">-->
+<!--            <label for="floatingInput">количество участников в малой группе:</label>-->
+<!--            <div style="color:red" th:if="${#fields.hasErrors('smallGroupParticipants')}"-->
+<!--                 th:errors="*{smallGroupParticipants}"></div>-->
+<!--        </div>-->
 
         <div class="form-floating mb-3">
             <input type="number" th:field="*{largeGroupParticipants}" placeholder="например: 5" class="form-control"
@@ -132,21 +127,22 @@
         <div class="form-floating mb-3">
             <input type="number" th:field="*{priceSmallGroup}" placeholder="число, например: 8000" class="form-control"
                    id="floatingInput">
-            <label for="floatingInput">стоимость для малой группы:</label>
+            <label for="floatingInput">стоимость тура:</label>
             <div style="color:red" th:if="${#fields.hasErrors('priceSmallGroup')}" th:errors="*{priceSmallGroup}"></div>
         </div>
 
-        <div class="form-floating mb-3">
-            <input type="number" th:field="*{priceLargeGroup}" placeholder="число, например: 10000" class="form-control"
-                   id="floatingInput">
-            <label for="floatingInput">стоимость для полной группы:</label>
-            <div style="color:red" th:if="${#fields.hasErrors('priceLargeGroup')}" th:errors="*{priceLargeGroup}"></div>
-        </div>
+<!--        <div class="form-floating mb-3">-->
+<!--            <input type="number" th:field="*{priceLargeGroup}" placeholder="число, например: 10000" class="form-control"-->
+<!--                   id="floatingInput">-->
+<!--            <label for="floatingInput">стоимость для полной группы:</label>-->
+<!--            <div style="color:red" th:if="${#fields.hasErrors('priceLargeGroup')}" th:errors="*{priceLargeGroup}"></div>-->
+<!--        </div>-->
 
         <br>
         <p>Загрузите фотографии. </p>
         <p>Вы можете добавить до 5 фотографий.</p>
         <p>Первая фотография будет лицевой на карточке тура. </p>
+        <br/>
 
         <div class="input-group mb-3">
             <input type="file" name="file_one" class="form-control" id="inputGroupFile03" aria-describedby="inputGroupFileAddon03"
@@ -168,86 +164,6 @@
             <input type="file" name="file_five" class="form-control" id="inputGroupFile03" aria-describedby="inputGroupFileAddon03"
                    aria-label="Upload">
         </div>
-
-
-        <!--    <label for="title">Название тура: </label>-->
-        <!--    <input type="text" th:field="*{title}" placeholder="например: К облакам!" id="title">-->
-        <!--    &lt;!&ndash;    //В случае непройденной валидации выводим ошибки&ndash;&gt;-->
-        <!--    <div style="color:red" th:if="${#fields.hasErrors('title')}" th:errors="*{title}"></div>-->
-        <!--    <br>-->
-        <!--    <br>-->
-        <!--    <label for="descriptionShort">Краткое описание тура: </label>-->
-        <!--    <textarea th:field="*{descriptionShort}" placeholder="например: Каково быть выше облаков? У нас есть ответ!"-->
-        <!--              id="descriptionShort"></textarea>-->
-        <!--    <div style="color:red" th:if="${#fields.hasErrors('descriptionShort')}" th:errors="*{descriptionShort}"></div>-->
-        <!--    <br>-->
-        <!--    <br>-->
-        <!--    <label for="descriptionFull">Описание тура: </label>-->
-        <!--    <textarea th:field="*{descriptionFull}" placeholder="развернутое описание тура" id="descriptionFull"></textarea>-->
-        <!--    <div style="color:red" th:if="${#fields.hasErrors('descriptionFull')}" th:errors="*{descriptionFull}"></div>-->
-        <!--    <br>-->
-        <!--    <br>-->
-        <!--    <label for="tourType">Тип тура: </label>-->
-        <!--    <select name="tourType" th:field="*{tourType}" id="tourType">-->
-        <!--        <div th:each="element: ${tourType}">-->
-        <!--            <option th:text="${element.name().toLowerCase()}" th:value="${element.name()}"></option>-->
-        <!--        </div>-->
-        <!--    </select>-->
-        <!--    <div style="color:red" th:if="${#fields.hasErrors('tourType')}" th:errors="*{tourType}"></div>-->
-        <!--    <br>-->
-        <!--    <br>-->
-        <!--    <label for="distance">Протяженность маршрута: </label>-->
-        <!--    <input th:type="text" th:field="*{distance}" placeholder="например: 20 км" id="distance">-->
-        <!--    <div style="color:red" th:if="${#fields.hasErrors('distance')}" th:errors="*{distance}"></div>-->
-        <!--    <br>-->
-        <!--    <br>-->
-        <!--    <label for="duration">Продолжительность маршрута: </label>-->
-        <!--    <input th:type="text" th:field="*{duration}" placeholder="например: 8 часов" id="duration">-->
-        <!--    <div style="color:red" th:if="${#fields.hasErrors('distance')}" th:errors="*{duration}"></div>-->
-        <!--    <br>-->
-        <!--    <br>-->
-        <!--    <label for="elevation">Набор высоты:</label>-->
-        <!--    <input type="text" th:field="*{elevation}" placeholder="например: 1300 метров" id="elevation">-->
-        <!--    <div style="color:red" th:if="${#fields.hasErrors('elevation')}" th:errors="*{elevation}"></div>-->
-        <!--    <br>-->
-        <!--    <br>-->
-        <!--    <label for="smallGroupParticipants">Кол-во участников для малой группы, до:</label>-->
-        <!--    <input type="number" th:field="*{smallGroupParticipants}" placeholder="например: 3" id="smallGroupParticipants">-->
-        <!--    <div style="color:red" th:if="${#fields.hasErrors('smallGroupParticipants')}"-->
-        <!--         th:errors="*{smallGroupParticipants}"></div>-->
-        <!--    <br>-->
-        <!--    <br>-->
-        <!--    <label for="largeGroupParticipants">Максимум человек в группе:</label>-->
-        <!--    <input type="number" th:field="*{largeGroupParticipants}" placeholder="например: 5" id="largeGroupParticipants">-->
-        <!--    <div style="color:red" th:if="${#fields.hasErrors('largeGroupParticipants')}"-->
-        <!--         th:errors="*{largeGroupParticipants}"></div>-->
-        <!--    <br>-->
-        <!--    <br>-->
-        <!--    <label for="priceSmallGroup">Стоимость для малой группы: </label>-->
-        <!--    <input type="number" th:field="*{priceSmallGroup}" placeholder="число, например: 8000" id="priceSmallGroup">-->
-        <!--    <div style="color:red" th:if="${#fields.hasErrors('priceSmallGroup')}" min="1" step="100"-->
-        <!--         th:errors="*{priceSmallGroup}"></div>-->
-        <!--    <br>-->
-        <!--    <br>-->
-        <!--    <label for="priceLargeGroup">Стоимость для большой группы: </label>-->
-        <!--    <input type="number" th:field="*{priceLargeGroup}" placeholder="число, например: 8000" id="priceLargeGroup">-->
-        <!--    <div style="color:red" th:if="${#fields.hasErrors('priceLargeGroup')}" min="1" step="100"-->
-        <!--         th:errors="*{priceLargeGroup}"></div>-->
-        <!--    <br>-->
-        <!--    <br>-->
-        <!--    <p >Вы можете добавить до 5 фотографий. Первая фотография будет лицевой на карточке тура </p>-->
-        <!--    &lt;!&ndash;    Поля для загрузки фотографий &ndash;&gt;-->
-        <!--    <input type="file" name="file_one">-->
-        <!--    <br>-->
-        <!--    <input type="file" name="file_two">-->
-        <!--    <br>-->
-        <!--    <input type="file" name="file_three">-->
-        <!--    <br>-->
-        <!--    <input type="file" name="file_four">-->
-        <!--    <br>-->
-        <!--    <input type="file" name="file_five">-->
-        <!--    <br>-->
-        <!--    <br>-->
         <input type="submit" value="Добавить тур" id="submitButton">
         <div id="backButton">
         <a href="javascript:history.back()" >Отменить</a>

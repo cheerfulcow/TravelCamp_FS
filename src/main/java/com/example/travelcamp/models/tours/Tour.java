@@ -46,14 +46,14 @@ public class Tour {
     @Max(value = 1000000, message = "стоимость не должна быть более 1000000")
     private double priceSmallGroup;
 
-    @Column (nullable = false)
-    @Min(value = 1000, message = "стоимость должна быть не менее 1000")
-    @Max(value = 1000000, message = "стоимость не должна быть более 1000000")
+//    @Column (nullable = false)
+//    @Min(value = 1000, message = "стоимость должна быть не менее 1000")
+//    @Max(value = 1000000, message = "стоимость не должна быть более 1000000")
     private double priceLargeGroup;
 
-    @Column
-    @Min(value = 1, message = "количество человек не может быть меньше 1")
-    @Max(20)
+//    @Column
+//    @Min(value = 1, message = "количество человек не может быть меньше 1")
+//    @Max(20)
     private int smallGroupParticipants;
 
     @Column
@@ -107,6 +107,20 @@ public class Tour {
         this.priceSmallGroup = priceSmallGroup;
         this.priceLargeGroup = priceLargeGroup;
         this.smallGroupParticipants = smallGroupParticipants;
+        this.largeGroupParticipants = largeGroupParticipants;
+        this.tourType = tourType;
+        this.tourImageList = tourImageList;
+        this.orderList = orderList;
+    }
+
+    public Tour(String title, String descriptionShort, String descriptionFull, String duration, String distance, String elevation, double priceSmallGroup, int largeGroupParticipants, String tourType, List<TourImage> tourImageList, List<Order> orderList) {
+        this.title = title;
+        this.descriptionShort = descriptionShort;
+        this.descriptionFull = descriptionFull;
+        this.duration = duration;
+        this.distance = distance;
+        this.elevation = elevation;
+        this.priceSmallGroup = priceSmallGroup;
         this.largeGroupParticipants = largeGroupParticipants;
         this.tourType = tourType;
         this.tourImageList = tourImageList;

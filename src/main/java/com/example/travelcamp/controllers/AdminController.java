@@ -56,6 +56,7 @@ public class AdminController {
         UserAuthSecurity userAuthSecurity = (UserAuthSecurity) authentication.getPrincipal();
         model.addAttribute("user", userAuthSecurity.getUser());
         model.addAttribute("tours", tourService.findAllTours());
+        model.addAttribute("tourTypes", TourTypeEnum.values());
         return "admin/indexAdmin";
     }
 
@@ -108,6 +109,9 @@ public class AdminController {
     //Редактирование тура
     @GetMapping("tours/edit/{id}")
     public String tourEdit(@PathVariable("id") long id, Model model) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        UserAuthSecurity userAuthSecurity = (UserAuthSecurity) authentication.getPrincipal();
+        model.addAttribute("user", userAuthSecurity.getUser());
         model.addAttribute("tour", tourService.getTourById(id));
         model.addAttribute("tourType", TourTypeEnum.values());
         return "admin/tourEdit";
@@ -124,6 +128,9 @@ public class AdminController {
                            @RequestParam("file_five") MultipartFile file_five,
                            Model model) throws IOException {
         if (bindingResult.hasErrors()) {
+            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+            UserAuthSecurity userAuthSecurity = (UserAuthSecurity) authentication.getPrincipal();
+            model.addAttribute("user", userAuthSecurity.getUser());
             model.addAttribute("tourType", TourTypeEnum.values());
             return "admin/tourEdit";
         }
@@ -198,6 +205,7 @@ public class AdminController {
     public String showAllOrders(Model model) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         UserAuthSecurity userAuthSecurity = (UserAuthSecurity) authentication.getPrincipal();
+        model.addAttribute("user", userAuthSecurity.getUser());
         model.addAttribute("userAuth", userAuthSecurity.getUser());
         model.addAttribute("orders", orderService.getAllOrders());
         model.addAttribute("status", OrderStatus.values());
@@ -206,7 +214,7 @@ public class AdminController {
     }
 
     //Подробная информация о заказе и изменение его статуса
-    @GetMapping("/admin/orders/{id}")
+    @GetMapping("/orders/{id}")
     public String orderInfo(@PathVariable("id") int id, Model model) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         UserAuthSecurity userAuthSecurity = (UserAuthSecurity) authentication.getPrincipal();
@@ -216,14 +224,15 @@ public class AdminController {
         return "/admin/orderInfo";
     }
 
-    //Изменение статуса заказа на странице с заказами
-    @PostMapping("/admin/orders/{id}")
-    public String ChangeOrderStatus(@ModelAttribute("status") OrderStatus orderStatus,
+    //Изменение статуса заказа на странице с заказами  public String userInfoEdit(@PathVariable("id") int id, @ModelAttribute("role") String role) {
+    @PostMapping("/orders/{id}")
+    public String ChangeOrderStatus(@RequestParam("status") String orderStatus,
                                     @PathVariable("id") int id)
     {
         Order order = orderService.getOrderById(id); //получаем объект заказа из БД
-        order.setOrderStatus(orderStatus.name()); //меняем статус на выбранный в селекте
+        order.setOrderStatus(orderStatus); //меняем статус на выбранный в селекте
         orderService.updateOrder(id, order); //обновляем данные заказа в БД
+        System.out.println("Ордер статус: " + orderStatus);
         return "redirect:/admin/orders/{id}";
     }
 

@@ -18,78 +18,91 @@
 <div id="navbarHome">
     <nav class="fixed-top bg-dark py-3 justify-content-around align-items-center" data-bs-theme="dark">
         <div class="row align-items-center justify-content-center px-2">
-            <div class="col-md-5 px-4 justify-content-start">
+            <div class=" col-md-3 px-4 justify-content-start">
                 <img src="/static/img/siteLogo.png" id="siteLogo" th:src="@{/img/siteLogo.png}">
-                <a href="/index" id="logoText">TravelCamp</a>
+                <a href="/admin/index" id="logoText">TravelCamp</a>
             </div>
-            <div class="col-md-2 navLinks">
-                <a href="/about">О нас</a>
-            </div>
-            <div class="col-md-2 navLinks">
-                <a href="/tours">Наши туры</a>
-            </div>
-            <div class="col-md-3 offset-md-0 navLinks ">
+            <div class=" col-md-4 navLinks ">
                 <div class="adminLogout" th:text="'Вы вошли как '+${userAuth.getRole()}"></div>
                 <div class="adminLogout">
                     <form method="POST" th:action="@{/logout}">
                         <button type="submit" >(выйти)</button>
                     </form>
                 </div>
-                <div class="adminNavSelect">
-                    <select onchange="window.location.href=this.options[this.selectedIndex].value" class="form-select"
-                            aria-label="Default select example">
-                        <option selected disabled>Выберите действие</option>
-                        <option value="/admin/orders">Просмотр заказов</option>
-                        <option value="/admin/tours/add">Добавить новый тур</option>
-                        <option value="/admin/users">Просмотр пользователей</option>
-                    </select>
-                </div>
+            </div>
+            <div class=" col-md-3 adminNavSelect">
+                <select onchange="window.location.href=this.options[this.selectedIndex].value" class="form-select"
+                        aria-label="Default select example">
+                    <option selected disabled>Выберите действие</option>
+                    <option value="/admin/orders">Просмотр заказов</option>
+                    <option value="/admin/tours/add">Добавить новый тур</option>
+                    <option value="/admin/index#ourTours">Просмотр туров</option>
+                    <option value="/admin/users">Просмотр пользователей</option>
+                </select>
             </div>
         </div>
     </nav>
 </div>
 <!-------------------------->
 
-<h4 class="usersListH4">ПРОСМОТР ЗАКАЗОВ</h4>
+<h4 class="usersListH4 mb-5">ПРОСМОТР ЗАКАЗОВ</h4>
 
-<h3>Поиск заказов</h3>
+
+<!-----------  поиск  ----------->
+<div class="orderSearch">
 <!--th:action - указываем, каким URL-адресом будет обработана наша страница(на какой адрес
 её отправляем, т.е. этот адрес д.б. у соответствующего контролера
 В name указываем имя, по которому контроллер будет принимать введенные значения с поля-->
 <form th:method="POST" th:action="@{/admin/orders/search}">
-    <label for="search">Поиск по номеру заказа</label>
+    <label for="search" class="mb-4">найти заказ по номеру:</label>
     <!--  Отправляем по ключу value полученное с формы значение на контроллер и обрабатываем его там-->
-    <input type="text" id="search" name="search" th:value="*{value_search}" width="200px" maxlength="4">
+    <input type="text" id="search" name="search" th:value="*{value_search}" width="200px" maxlength="4" placeholder="последние 4 символа" class="mx-4">
     <input type="submit" value="Искать">
     <br>
 </form>
-<hr>
 
-
-<h3>Результат поиска:</h3>
-<!--Тут мы принимаем {search_order}, который приходит к нам из метода AdminКонтроллера, который обрабатывает поисковый запрос-->
 
 <div th:if="(${!value_search.equals('')}) and (${search_order.size()} < 1)">
-    по вашему запросу ничего не найдено :(
-</div>
-<div th:each="orderFinded: ${search_order}">
-    <a th:href="@{/admin/orders/{id}(id=${orderFinded.getId()})}" th:text="${orderFinded.getOrderNumber()}"></a>
     <hr>
+    <h3 class="textAlignCenter">Результат поиска:</h3>
+    <!--принимаем {search_order}, который приходит к нам из метода AdminКонтроллера, который обрабатывает поисковый запрос-->
+    <h5>по вашему запросу ничего не найдено :(</h5>
 </div>
-
+<div th:if="(${!value_search.equals('')}) and (${search_order.size()} > 0)" >
+    <h3 class="textAlignCenter">Результат поиска:</h3>
+    <div th:each="orderFinded: ${search_order}" class="orderSearch" >
+    <a th:href="@{/admin/orders/{id}(id=${orderFinded.getId()})}" th:text="${orderFinded.getOrderNumber()}"></a>
+    </div>
+</div>
 <hr>
 <br>
+<!--------------------------------------->
+
+
 <h3>Список всех заказов</h3>
+</div>
+<br>
 <br>
 
-<br>
-<div th:each="order : ${orders}">
-    <a th:href="@{/admin/orders/{id}(id=${order.getId()})}" th:text="'Номер заказа: ' + ${order.getOrderNumber()}"></a>
-    <p th:text="'Дата заказа: ' + ${#temporals.format(order.getDateTime(), 'dd-MMM-yyyy')}"></p>
-    <p th:text="'Название тура: ' + ${order.getTours().getTitle()}"></p>
-    <p th:text="'Статус заказа: ' + ${order.getOrderStatus()}"></p>
-    <hr>
-    <br>
+<div class="row col-12 col-md-11 col-xl-10 userInfoTable ">
+    <table class="table table-dark table-striped px-4 ">
+        <thead>
+        <tr>
+            <th scope="col">ID</th>
+            <th scope="col">Номер заказа</th>
+            <th scope="col">Дата тура</th>
+            <th scope="col">Статус</th>
+        </tr>
+        </thead>
+        <tbody th:if="${orders.size() > 0}">
+        <tr th:each="order : ${orders}" >
+            <th scope="row" th:text="${order.getId()}">1</th>
+            <td> <a th:href="@{/admin/orders/{id}(id=${order.getId()})}" th:text="${order.getOrderNumber()}"></a> </td>
+            <td th:text="${order.getTourDate()}"></td>
+            <td th:text="${order.getOrderStatus()}"></td>
+        </tr>
+        </tbody>
+    </table>
 </div>
 
 </body>
