@@ -105,91 +105,118 @@
 </div>
 
 
-<h4 id="ourTours">НАШИ ТУРЫ</h4>
-
-
 <!-----------  поиск  ----------->
-<!--<div class="tourSearch">-->
-<!--    <h4>ПОИСК ТУРОВ:</h4>-->
+<div class="tourSearch">
+    <form id="ourTours" class="m-5" th:method="POST" th:action="@{/user/index/search}">
+        <div class="text-center">
+        <label for="search" class="mb-4">поиск по названию тура:</label>
+        <!--  Отправляем по ключу value полученное с формы значение на контроллер и обрабатываем его там-->
+        <input type="text" id="search" name="search" th:value="*{value_search}" width="200px" class="mx-4">
+        </div>
+        <br/>
+        <label for="priceFrom">цена: </label>
+        <input type="number" name="priceFrom" id="priceFrom" th:value="*{priceFrom}" placeholder="0">
+        <label for="priceUpTo"> - </label>
+        <input type="number" name="priceUpTo" id="priceUpTo" th:value="*{priceUpTo}">
+        <br/>
+        <label for="ascending_price">по возрастанию цены</label>
+        <input type="radio" id="ascending_price" name="sortByPrice" value="sorted_by_ascending_price">
+        <label for="descending_price">по убыванию цены</label>
+        <input type="radio" id="descending_price" name="sortByPrice" value="sorted_by_descending_price">
+        <br/>
+        <label for="tourType">тип тура: </label>
+        <select id="tourType" name="tourType">
+            <option th:value="''" selected ></option>
+            <option th:each="tourType : ${tourTypes}"
+                    th:text="${tourType.name()}" th:value="${tourType.name()}">тип тура
+            </option>
+        </select>
+        <br/>
+        <input type="submit" value="Искать">
+        <br>
+    </form>
 
-<!--    <form th:method="POST" th:action="@{/admin/index/search}">-->
-<!--        <label for="search" class="mb-4">поиск по названию тура:</label>-->
-<!--        &lt;!&ndash;  Отправляем по ключу value полученное с формы значение на контроллер и обрабатываем его там&ndash;&gt;-->
-<!--        <input type="text" id="search" name="search" th:value="*{value_search}" width="200px" maxlength="4"-->
-<!--               class="mx-4">-->
-<!--        <br/>-->
-<!--        <p>цена:</p>-->
-<!--        <label for="priceFrom">от</label>-->
-<!--        <input type="text" name="priceFrom" id="priceFrom" th:value="*{priceFrom}">-->
-<!--        <label for="priceUpTo">до</label>-->
-<!--        <input type="text" name="priceUpTo" id="priceUpTo" th:value="*{priceUpTo}">-->
-<!--        <br/>-->
-<!--        <label for="ascending_price">по возрастанию цены</label>-->
-<!--        <input type="radio" id="ascending_price" name="price" value="sorted_by_ascending_price">-->
-<!--        <label for="descending_price">по убыванию цены</label>-->
-<!--        <input type="radio" id="descending_price" name="price" value="sorted_by_descending_price">-->
-<!--        <br/>-->
-<!--        <p>тип тура:</p>-->
-<!--        <select id="tourType" name="tourType">-->
-<!--            <option th:each="tourType : ${tourTypes}"-->
-<!--                    th:text="${tourType.name()}" th:value="${tourType.name()}">тип тура-->
-<!--            </option>-->
-<!--        </select>-->
-<!--        <br/>-->
-<!--        <input type="submit" value="Искать">-->
-<!--        <br>-->
-<!--    </form>-->
+    <div th:if="(${isSearch} and ${search_tour.size()} < 1)">
+        <h4 class="textAlignCenter">к сожалению, по вашему запросу ничего не найдено:</h4>
+        <hr>
+    </div>
+    <div th:if="(${isSearch}) and (${search_tour.size()} > 0) ">
+        <h4 class="textAlignCenter">Найденные туры:</h4>
+    </div>
+</div>
 
-<!--    <div th:if="(${!value_search.equals('')}) and (${search_tour.size()} < 1)">-->
-<!--        <hr>-->
-<!--        <h3 class="textAlignCenter">Результат поиска:</h3>-->
-<!--        &lt;!&ndash;принимаем {search_order}, который приходит к нам из метода AdminКонтроллера, который обрабатывает поисковый запрос&ndash;&gt;-->
-<!--        <h5>по вашему запросу ничего не найдено :(</h5>-->
-<!--        <hr>-->
-<!--    </div>-->
-<!--    <div th:if="(${!value_search.equals('')}) and (${search_order.size()} > 0)">-->
-
-<!--        <h3 class="textAlignCenter">Результат поиска:</h3>-->
-
-<!--        <div class="row justify-content-around">-->
-<!--            <div class="col-11 ">-->
-<!--                <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-5" id="cardAdmin">-->
-<!--                    <div th:class="col" th:each="tourFinded: ${search_tour}" class="tourSearch">-->
-<!--                        <div class="card bg-warning-subtle">-->
-<!--                            <img th:src="'/img/uploadPath/' + ${tour.getTourImagesList()[0].getFileName()}"-->
-<!--                                 class="card-img-top"-->
-<!--                                 alt="Очень красивая картинка. Была. Просто поверьте нам на слово :) ">-->
-<!--                            <div class="card-body">-->
-<!--                                <h5 class="card-title text-center" th:text="${tour.getTitle()}">название</h5>-->
-<!--                                <h5 class="card-title text-center"-->
-<!--                                    th:text="'Стоимость тура: от ' + ${tour.getPriceSmallGroup()}">-->
-<!--                                    стоимость</h5>-->
-<!--                                <h6 class="card-text text-center"-->
-<!--                                    th:text="'Тип тура:' + ${tour.getTourType().toLowerCase()}">123</h6>-->
-<!--                                <h6 class="card-text text-center" th:text="${tour.getDescriptionShort()}">123</h6>-->
-<!--                                <div class="align-items-center vstack" style="text-align: center">-->
-<!--                                    <a class="btn btn-dark m-2 buttonCardInfo"-->
-<!--                                       th:href="@{/admin/tours/info/{id}(id=${tour.getId()})}"-->
-<!--                                       role="button">Подробнее о туре</a>-->
-<!--                                    <a class="btn btn-dark m-2 buttonCardInfo"-->
-<!--                                       th:href="@{/admin/tours/edit/{id}(id=${tour.getId()})}"-->
-<!--                                       role="button">Редактировать тур</a>-->
-<!--                                    <a class="btn btn-danger m-2 buttonCardInfo"-->
-<!--                                       th:href="@{/admin/tours/delete/{id}(id=${tour.getId()})}" role="button">Удалить-->
-<!--                                        тур</a>-->
-<!--                                </div>-->
-<!--                            </div>-->
-<!--                        </div>-->
-<!--                    </div>-->
-<!--                </div>-->
-<!--            </div>-->
-<!--        </div>-->
-<!--    </div>-->
-<!--</div>-->
-<!--<hr>-->
-<!--<br>-->
+<div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4" id="cardUser">
+    <div class="col-4" th:each="tour: ${search_tour}">
+        <div class="card bg-warning-subtle">
+            <img src="/static/img/siteLogo.png"
+                 th:src="'/img/uploadPath/' + ${tour.getTourImagesList()[0].getFileName()}"
+                 class="card-img-top cardImage"
+                 alt="Очень красивая картинка. Была.">
+            <div class="card-body">
+                <h5 class="card-title text-center" th:text="${tour.getTitle()}"></h5>
+                <h5 class="card-title text-center" th:text="${tour.getTourType()}"></h5>
+                <h5 class="card-title text-center"
+                    th:text="'Стоимость тура: ' + ${tour.getPriceSmallGroup()}"></h5>
+                <h6 class="card-text text-center" th:text="${tour.getDescriptionShort()}">Краткое
+                    описание</h6>
+                <div class="align-items-center vstack" style="text-align: center">
+                    <a class="btn btn-dark m-2 buttonCard"
+                       th:href="@{/user/tours/info/{id}(id=${tour.getId()})}"
+                       role="button">Подробнее о туре</a>
+                    <a class="btn btn-dark m-2 buttonCard" th:href="@{#contacts}"
+                       role="button">Задать вопрос</a>
+                    <th:block th:if="${cart.size() > 0 }">
+                        <th:block th:if="${cart.size() == 1}">
+                            <th:block th:switch="${cart.get(0).getTourId() != tour.getId()}">
+                                <a class="btn btn-dark m-2 buttonCard"
+                                   th:case="true" th:href="@{/user/cart/add/{id}(id=${tour.getId()})}"
+                                   role="button">Добавить в корзину</a>
+                                <a class="btn btn-dark m-2 buttonCard"
+                                   th:case="false" th:href="@{/user/cart/delete/{id}(id=${tour.getId()})}"
+                                   role="button">Уже в корзине (удалить)</a>
+                            </th:block>
+                        </th:block>
+                        <th:block th:if="${cart.size() == 2}">
+                            <th:block
+                                    th:switch="${(cart.get(0).getTourId() != tour.getId()) and (cart.get(1).getTourId() != tour.getId())}">
+                                <a class="btn btn-dark m-2 buttonCard"
+                                   th:case="true" th:href="@{/user/cart/add/{id}(id=${tour.getId()})}"
+                                   role="button">Добавить в корзину</a>
+                                <a class="btn btn-dark m-2 buttonCard"
+                                   th:case="false" th:href="@{/user/cart/delete/{id}(id=${tour.getId()})}"
+                                   role="button">Уже в корзине (удалить)</a>
+                            </th:block>
+                        </th:block>
+                        <th:block th:if="${cart.size() == 3}">
+                            <th:block
+                                    th:switch="${(cart.get(0).getTourId() != tour.getId()) and (cart.get(1).getTourId() != tour.getId()) and (cart.get(2).getTourId() != tour.getId())}">
+                                <a class="btn btn-dark m-2 buttonCard"
+                                   th:case="true" th:href="@{/user/cart/add/{id}(id=${tour.getId()})}"
+                                   role="button">Добавить в корзину</a>
+                                <a class="btn btn-dark m-2 buttonCard"
+                                   th:case="false" th:href="@{/user/cart/delete/{id}(id=${tour.getId()})}"
+                                   role="button">Уже в корзине (удалить)</a>
+                            </th:block>
+                        </th:block>
+                    </th:block>
+                    <a class="btn btn-dark m-2 buttonCard"
+                       th:if="${cart.size() < 1}" th:href="@{/user/cart/add/{id}(id=${tour.getId()})}"
+                       role="button">Добавить в корзину</a>
+                    <a class="btn btn-dark m-2 buttonCard"
+                       th:if="${cart.size() > 0}"
+                       th:href="@{/user/cart}"
+                       role="button">Перейти в корзину</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<br>
+<hr style="border-color: #ffda9e">
+<br>
 <!--------------------------------------->
 
+<h4 id="ourTours">НАШИ ТУРЫ</h4>
 
 <!------ Список туров ------>
 
@@ -202,6 +229,7 @@
                  alt="Очень красивая картинка. Была.">
             <div class="card-body">
                 <h5 class="card-title text-center" th:text="${tour.getTitle()}"></h5>
+                <h5 class="card-title text-center" th:text="${tour.getTourType()}"></h5>
                 <h5 class="card-title text-center"
                     th:text="'Стоимость тура: ' + ${tour.getPriceSmallGroup()}"></h5>
                 <h6 class="card-text text-center" th:text="${tour.getDescriptionShort()}">Краткое
@@ -259,8 +287,9 @@
     </div>
 </div>
 
-<h4 id="aboutUs" >О НАС</h4>
-<p class="text-center">Тут должно быть красочное описание компании с очаровательной историей и великолепными фотографиями</p>
+<h4 id="aboutUs">О НАС</h4>
+<p class="text-center">Тут должно быть красочное описание компании с очаровательной историей и великолепными
+    фотографиями</p>
 
 
 <div id="contacts">

@@ -158,6 +158,11 @@ cardImage {
     margin: 2vh auto;
 }
 
+.orderImg img{
+    width: 20vw;
+    border-radius: 2vw;
+}
+
 /*------  TourDetailed  ------*/
 
 .cardInfoDetailed {
@@ -309,7 +314,7 @@ cardImage {
       }
 
 .mx-7-vh {
-    margin: 0 auto 7vh auto;
+    margin: 7vh auto 7vh auto;
 }
 
 .orderButton {
