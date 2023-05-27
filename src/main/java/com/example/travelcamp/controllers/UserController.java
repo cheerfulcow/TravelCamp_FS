@@ -5,6 +5,7 @@ import com.example.travelcamp.enumm.TourTypeEnum;
 import com.example.travelcamp.models.Cart;
 import com.example.travelcamp.models.Order;
 import com.example.travelcamp.models.tours.Tour;
+import com.example.travelcamp.models.tours.TourType;
 import com.example.travelcamp.repositories.UserRepository;
 import com.example.travelcamp.security.UserAuthSecurity;
 import com.example.travelcamp.services.CartService;
@@ -57,7 +58,66 @@ public class UserController {
         UserAuthSecurity userAuthSecurity = (UserAuthSecurity) authentication.getPrincipal();
         model.addAttribute("user", userAuthSecurity.getUser());
         model.addAttribute("tours", tourService.findAllTours());
+        model.addAttribute("tourTypes", TourTypeEnum.values());
         model.addAttribute("cart", cartService.getAllToursFromCart(userAuthSecurity.getUser().getId()));
+        model.addAttribute("search_tour", new ArrayList<Tour>());
+        model.addAttribute("isSearch", false);
+        return "user/indexUser";
+    }
+
+    @PostMapping("/index/search")
+    public String tourSearch(Model model,
+                             @RequestParam("search") String search,
+                             @RequestParam("priceFrom") String priceFrom,
+                             @RequestParam("priceUpTo") String priceUpTo,
+                             @RequestParam(value = "sortByPrice", required = false, defaultValue = "") String sortByPrice,
+                             @RequestParam(value = "tourType", required = false, defaultValue = "") String tourType
+    ) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        UserAuthSecurity userAuthSecurity = (UserAuthSecurity) authentication.getPrincipal();
+        model.addAttribute("isSearch", true);
+        model.addAttribute("user", userAuthSecurity.getUser());
+        model.addAttribute("tours", tourService.findAllTours());
+        model.addAttribute("tourTypes", TourTypeEnum.values());
+        model.addAttribute("cart", cartService.getAllToursFromCart(userAuthSecurity.getUser().getId()));
+        model.addAttribute("search_tour", new ArrayList<Tour>());
+        if (!search.equals("")) {
+            model.addAttribute("search_tour", tourService.getToursByTitle(search));
+            return "user/indexUser";
+        }
+        if (!priceFrom.isEmpty() || !priceUpTo.isEmpty()) { //Если задан диапазон цен
+            if (!tourType.isEmpty()) {
+                if (sortByPrice.equals("sorted_by_ascending_price")) { //диапазон цен + сортировка по возрастанию + тип тура
+                    model.addAttribute("search_tour", tourService.getToursByPriceRangeAndTourTypeSortByPriceAsc(priceFrom, priceUpTo, tourType));
+                    System.out.println("диапазон + тип тура + цена увеличение");
+                } else if (sortByPrice.equals("sorted_by_descending_price")) { //диапазон цен + сортировка по убыванию цены + тип тура
+                    model.addAttribute("search_tour", tourService.getToursFilterByPriceRangeAndTourTypeSortByPriceDesc(priceFrom, priceUpTo, tourType));
+                    System.out.println("диапазон + тип тура + цена уменьшение");
+                } else
+                    model.addAttribute("search_tour", tourService.getToursFilterByPriceRangeAndTourType(priceFrom, priceUpTo, tourType));
+                System.out.println("диапазон + тип тура");
+            } else {
+                if (sortByPrice.equals("sorted_by_ascending_price")) { //диапазон цен + сортировка по возрастанию цены
+                    model.addAttribute("search_tour", tourService.getToursFilterByPriceRangeSortByPriceAsc(priceFrom, priceUpTo)); //диапазон цен + сортировка по возрастанию цены
+                } else if (sortByPrice.equals("sorted_by_descending_price")) { //диапазон цен + сортировка по убыванию цены
+                    model.addAttribute("search_tour", tourService.getToursFilterByPriceRangeSortByPriceDesc(priceFrom, priceUpTo));
+                } else {  //Если выбран только диапазон цен (любое из полей)
+                    model.addAttribute("search_tour", tourService.getToursFilterByPriceRange(priceFrom, priceUpTo));
+                }
+            }
+        } else { //Если диапазон цен не задан
+            if (sortByPrice.equals("sorted_by_ascending_price")) {
+                if (!tourType.isEmpty()) {
+                    model.addAttribute("search_tour", tourService.getToursByTourTypeSortByPriceAsc(tourType));
+                } else model.addAttribute("search_tour", tourService.getToursSortByPriceAsc());
+            } else if (sortByPrice.equals("sorted_by_descending_price")) {
+                if (!tourType.isEmpty()) {
+                    model.addAttribute("search_tour", tourService.getToursByTourTypeSortByPriceDesc(tourType));
+                } else model.addAttribute("search_tour", tourService.getToursSortByPriceDesc());
+            } else model.addAttribute("search_tour", tourService.getToursByTourType(tourType));
+        }
+        model.addAttribute("priceFrom", priceFrom);
+        model.addAttribute("priceUpTo", priceUpTo);
         return "user/indexUser";
     }
 
@@ -120,7 +180,7 @@ public class UserController {
     //Обрабатываем нажатие на ссылку "оформить заказ"
     @PostMapping("/order/create")
     public String order(@RequestParam("personNumber") int personNumber,
-                        @RequestParam("tourDate") String tourDateString) {
+                        @RequestParam("tourDate") List<String> tourDateList) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication(); //Извлекаем объект аутентифицированного пользователя
         UserAuthSecurity userAuthSecurity = (UserAuthSecurity) authentication.getPrincipal(); //вытаскиваем из объекта аутентификации объект модели person
         long user_id = userAuthSecurity.getUser().getId(); //извлекаем id пользователя из объекта
@@ -134,7 +194,7 @@ public class UserController {
 //            model.addAttribute("tourDate", tourDateString);
 //            return "/user/cart";
 //    }
-        createOrder(tourList, tourDateString, personNumber, userAuthSecurity);
+        createOrder(tourList, tourDateList, personNumber, userAuthSecurity);
         return "redirect:/user/orders";
     }
 
@@ -148,8 +208,6 @@ public class UserController {
         model.addAttribute("user", userAuthSecurity.getUser());
         return "/user/orders";
     }
-
-
 
 
 // ------------------- private methods section ---------------- //
@@ -172,16 +230,15 @@ public class UserController {
     }
 
     //Создание заказа
-    private void createOrder(List<Tour> tourList, String tourDate, int personNumber, UserAuthSecurity userAuthSecurity) {
-        for (Tour tour : tourList) {
+    private void createOrder(List<Tour> tourList, List<String> tourDate, int personNumber, UserAuthSecurity userAuthSecurity) {
+        for (int i = 0; i < tourList.size(); i++) {
             //формируем уникальный номер заказа
             String orderNumber = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")) + "-" + UUID.randomUUID().toString();
             //Для каждого из товара в корзине отдельный заказ
-            Order newOrder = new Order(orderNumber, OrderStatus.ПРИНЯТ.name(), tourDate, personNumber, 1, tour.getPriceSmallGroup(), tour, userAuthSecurity.getUser());
+            Order newOrder = new Order(orderNumber, OrderStatus.ПРИНЯТ.name(), tourDate.get(i), personNumber, 1, tourList.get(i).getPriceSmallGroup(), tourList.get(i), userAuthSecurity.getUser());
             orderService.saveOrder(newOrder);
-            cartService.deleteTourFromCart(userAuthSecurity.getUser().getId(), tour.getId()); //удаляем заказанный товар из корзины
+            cartService.deleteTourFromCart(userAuthSecurity.getUser().getId(), tourList.get(i).getId()); //удаляем заказанный товар из корзины
         }
     }
-
 
 }

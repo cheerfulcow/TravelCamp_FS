@@ -19,12 +19,12 @@ public class User {
 
     @Column(name = "login", nullable = false, columnDefinition = "text",unique = true)
     @NotEmpty(message = "это поле обязательно для заполнения")
-    @Size(min = 5, max = 50, message = "Логин должен быть не короче 5 и не длиннее 50 символов")
+    @Size(min = 3, max = 150, message = "минимум 3 символа")
     private String login;
 
     @Column(name = "password", nullable = false)
     @NotEmpty(message = "это поле обязательно для заполнения")
-    @Size(min = 5, max = 150, message = "Пароль должен быть содержать от 5 до 150 символов")
+    @Size(min = 5, max = 150, message = "Минимум 5 символов")
     //паттерн закрыт, т.к. принимаем encoded пароль.
 //    @Pattern(regexp = "([A-Za-z0-9]{5,50})$", message = "Используйте латинский алфавит(верхний, нижний регистр) и цифры")
     private String password;
@@ -39,18 +39,18 @@ public class User {
 
     @Column
     @NotEmpty(message = "это поле обязательно для заполнения")
-    @Pattern(regexp = "^((\\+7|7|8)+([0-9]){10})$", message = "введите номер телефона, начиная с (+7 или 7 или 8), без пробелов и дефисов. Например: +79005554433")
+    @Pattern(regexp = "^((\\+7|7|8)+([0-9]){10})$", message = "номер, начиная с (+7 или 7 или 8).\n Например: +79005554433")
     private String phoneNumber;
 
     @Column
     @NotEmpty(message = "это поле обязательно для заполнения")
-    @Size(min = 2, max = 50, message = "имя не должно быть короче 2 и длиннее 50 символов")
+    @Size(min = 2, max = 100, message = "имя не должно быть короче 2 символов")
     @Pattern(regexp = "([A-Za-zА-Яа-яЁё\\-]{2,30})$", message = "введите имя(латиница, кириллица)")
     private String firstName;
 
     @Column
     @NotEmpty(message = "это поле обязательно для заполнения")
-    @Size(min = 2, max = 50, message = "фамилия не должна быть короче 2 и длиннее 50 символов")
+    @Size(min = 2, max = 100, message = "фамилия не должна быть короче 2 символов")
     @Pattern(regexp = "([A-Za-zА-Яа-яЁё\\-]{2,30})$", message = "введите фамилию(латиница, кириллица)")
     private String secondName;
 

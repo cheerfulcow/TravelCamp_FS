@@ -82,8 +82,8 @@ h4 {
 
 
 
-cardImage {
-    width: 3px;
+.cardImage {
+    height: 40vh;
 }
 
 
@@ -156,6 +156,11 @@ cardImage {
 
 .marginCenter {
     margin: 2vh auto;
+}
+
+.orderImg img{
+    width: 20vw;
+    border-radius: 2vw;
 }
 
 /*------  TourDetailed  ------*/
@@ -275,6 +280,32 @@ cardImage {
 /*------------------------------*/
 
 
+/*----- search --------*/
+
+.tourSearch {
+    color: #ffda9e;
+}
+
+.tourSearch input, select, label {
+    height: 35px;
+    font-size: 14pt;
+    margin: 0 0 0 10px;
+}
+
+.buttonFilter {
+    padding: 2px 10px;
+    font-size: 20px;
+    margin: 0 0 6px 0;
+}
+
+.priceInput input{
+    width: 100px;
+}
+
+.searchInput {
+    width: 330px;
+}
+
 /*--------cart----------*/
 
 .cartItem {
@@ -309,7 +340,7 @@ cardImage {
       }
 
 .mx-7-vh {
-    margin: 0 auto 7vh auto;
+    margin: 7vh auto 7vh auto;
 }
 
 .orderButton {

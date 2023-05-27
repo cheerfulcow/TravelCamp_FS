@@ -20,7 +20,7 @@
             <div class="py-2 py-md-0 col-md-1 px-4 justify-content-start logoContainer">
                 <img src="/static/img/siteLogo.png" id="siteLogo" th:src="@{/img/siteLogo.png}">
             </div>
-            <div class="row col-md-3" >
+            <div class="row col-md-3">
                 <a href="/user/index" id="logoText" style="text-align: center">TravelCamp</a>
             </div>
             <div class="row col-md-8 align-items-center">
@@ -53,17 +53,23 @@
 </div>
 <!---------------------------------------------------------------------->
 
-СПИСОК ЗАКАЗОВ
+<h3 class="text-center mx-7-vh">СПИСОК ЗАКАЗОВ</h3>
 
-<div th:each="order : ${orders}">
-    <h3 th:text="'Заказ №' + ${order.getOrderNumber()}"></h3>
-    <img th:src="'/img/uploadPath/' + ${order.getTours().getTourImagesList().get(0).getFileName()}" width="300px">
-    <p th:text="'Название тура: ' + ${order.getTours().getTitle()}">
-<!--    <p th:text="'Количество: ' + ${order.getCount()}">-->
-    <p th:text="'Цена: ' + ${order.getTotalCost()}">
-        <!--  #temporals.format позволяет отформатировать значение в то, которое указываем ('dd-MMM-yyyy')-->
-    <p th:text="'Дата заказа: ' + ${#temporals.format(order.getDateTime(), 'yyyy-MM-dd')}"></p>
-    <p th:text="'Cтатус: ' + ${order.getOrderStatus()}"></p>
+<div class="row justify-content-start align-items-center mx-2" th:each="order : ${orders}">
+    <div class="col-5 p-1 p-md-2">
+        <h4 class="pb-md-3" th:text="'Заказ № ' + ${order.getOrderNumber()}">Заказ №</h4>
+        <p th:text="'Дата заказа: ' + ${#temporals.format(order.getDateTime(), 'yyyy-MM-dd')}">Дата</p>
+        <p >Название тура: <a th:href="@{/user/tours/info/{id}(id=${order.getTours().getId()})}" th:text="${order.getTours().getTitle()}">ссылка</a></p>
+        <p th:text="'Стоимость: ' + ${order.getTotalCost()} + ' руб.'">стоимость: 5999 руб</p>
+        <p th:text="'Cтатус: ' + ${order.getOrderStatus()}">Статус</p>
+        <p th:text="'Дата брони: ' + ${order.getTourDate()}">Дата тур</p>
+        <p th:text="'Количество человек: ' + ${order.getPersonNumber()}">Количество человек</p>
+    </div>
+    <div class="col-5 orderImg">
+        <img src="/static/img/siteLogo.png"
+             th:src="'/img/uploadPath/' + ${order.getTours().getTourImagesList().get(0).getFileName()}">
+    </div>
+    <hr class="col-8 my-4"/>
 </div>
 
 </body>

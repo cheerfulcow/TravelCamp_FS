@@ -1,6 +1,7 @@
 package com.example.travelcamp.services;
 
 import com.example.travelcamp.enumm.Role;
+import com.example.travelcamp.exception.UserNotFoundException;
 import com.example.travelcamp.models.User;
 import com.example.travelcamp.repositories.UserRepository;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -43,8 +44,8 @@ private final PasswordEncoder passwordEncoder;
     }
 
     public User findUserById(long id) {
-        Optional<User> optionalUser = userRepository.findById(id);
-        return optionalUser.orElse(null);
+        return userRepository.findById(id)
+                .orElseThrow(()-> new UserNotFoundException("Пользователь с айди %s не найден".formatted(id), "eeeeee"));
     }
 
     @Transactional
