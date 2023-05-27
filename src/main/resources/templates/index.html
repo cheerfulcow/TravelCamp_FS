@@ -9,20 +9,249 @@
     <link href="https://getbootstrap.com/docs/5.3/assets/css/docs.css" rel="stylesheet">
     <link rel="stylesheet" href="/static/css/index.css" th:href="@{/css/index.css}">
     <link rel="stylesheet" href="/static/css/main.css" th:href="@{/css/main.css}">
-    </head>
+
+
+    <!--    Для карусели   -->
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css" rel="stylesheet"/>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js"></script>
+
+    <!--    для коллапса (выезжающий фильтр/сортировка   -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
+
+    <link rel="stylesheet" href="/static/css/user.css" th:href="@{/css/user.css}">
+
+</head>
 
 <body>
 
-<div id="navbarHome"> </div>
+<!--Навбар JS-->
+<!--<div id="navbarHome"> </div>-->
 
-ВЫ НЕ АВТОРИЗОВАНЫ
-<a href="/registration">Регистрация</a>
+<!--NavBar section-->
+<div id="navbarHome">
+    <nav class="fixed-top bg-black py-3 justify-content-around align-items-center" data-bs-theme="dark">
+        <div class="row align-items-center justify-content-center px-0">
+            <div class="py-2 py-md-0 col-md-1 px-4 justify-content-start logoContainer">
+                <img src="/static/img/siteLogo.png" id="siteLogo" th:src="@{/img/siteLogo.png}">
+            </div>
+            <div class="row col-md-2">
+                <a href="/index" id="logoText" style="text-align: center">TravelCamp</a>
+            </div>
+            <div class="row col-md-9 align-items-center">
+                <div class="col-md-3 navLinks">
+                    <a href="#ourTours">Туры</a>
+                </div>
+                <div class="col-md-3 navLinks">
+                    <a href="#aboutUs">О нас</a>
+                </div>
+                <div class="col-md-3 navLinks">
+                    <a href="#contacts">Контакты</a>
+                </div>
+                <div class="col-md-3 navLinks">
+                    <a href="/authentication">Вход</a>
+                    <br>
+                    <a href="/registration">Регистрация</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+</div>
+<!---------------------------------------------------------------------->
 
 
-<div id="gap200">1</div>
+<!--    Карусель    -->
+<div id="demo" class="carousel slide carouselMain" data-ride="carousel">
+    <!-- Indicators -->
+    <ul class="carousel-indicators">
+        <li data-target="#demo" data-slide-to="0" class="active"></li>
+        <li data-target="#demo" data-slide-to="1"></li>
+        <li data-target="#demo" data-slide-to="2"></li>
+        <li data-target="#demo" data-slide-to="3"></li>
+    </ul>
+    <!-- The slideshow -->
+    <div class="carousel-inner ">
+        <div class="carousel-item active">
+            <img class="d-block w-100"
+                 src="/static/img/uploadPath/mainSlider/main_1.jpg"
+                 th:src="'/img/uploadPath/' + 'mainSlider/main_1.jpg'">
 
-<!--подключаем navbar-->
-<script src="/static/js/navbar.js" th:src="@{/js/navbar.js}"></script>
+        </div>
+        <div class="carousel-item">
+            <img class="d-block w-100" src="/static/img/siteLogo.png"
+                 th:src="'/img/uploadPath/' + 'mainSlider/main_2.jpg'">
+        </div>
+        <div class="carousel-item">
+            <img class="d-block w-100" th:src="'/img/uploadPath/' + 'mainSlider/main_3.jpg'"
+                 src="/static/img/siteLogo.png">
+        </div>
+        <div class="carousel-item">
+            <img class="d-block w-100" th:src="'/img/uploadPath/' + 'mainSlider/main_4.jpg'"
+                 src="/static/img/siteLogo.png">
+        </div>
+    </div>
+    <!-- Left and right controls -->
+    <a class="carousel-control-prev" href="#demo" data-slide="prev">
+        <span class="carousel-control-prev-icon"></span>
+    </a>
+    <a class="carousel-control-next" href="#demo" data-slide="next">
+        <span class="carousel-control-next-icon"></span>
+    </a>
+</div>
+
+
+<!-----------  поиск  ----------->
+<div class="tourSearch mt-5">
+    <form id="ourTours" class="mb-2" th:method="POST" th:action="@{/index/search}">
+        <div class="text-center">
+            <div class="col-md-10 col-xl-8 offset-md-1 offset-xl-2 mb-3">
+                <label for="search" class="mr-3">поиск по названию тура:</label>
+                <input type="text" id="search" name="search" th:value="*{value_search}" class="mx-0 searchInput">
+                <button class="btn btn-dark buttonFilter" type="button" data-bs-toggle="collapse"
+                        data-bs-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+                    &#11167;
+                </button>
+                <input type="submit" value="найти" class="px-3">
+            </div>
+            <div class="collapse" id="collapseExample">
+                <div class=" mb-3 priceInput">
+                    <label for="priceFrom">цена: </label>
+                    <input type="number" name="priceFrom" id="priceFrom" th:value="*{priceFrom}" placeholder="0">
+                    <label for="priceUpTo"> - </label>
+                    <input type="number" name="priceUpTo" id="priceUpTo" th:value="*{priceUpTo}">
+                    <select name="sortByPrice">
+                        <option value="" selected></option>
+                        <option value="sorted_by_ascending_price">&#9650;</option>
+                        <option value="sorted_by_descending_price">&#9660;</option>
+                    </select>
+                </div>
+                <div class="mb-3">
+                    <label for="tourType">тип тура: </label>
+                    <select id="tourType" name="tourType">
+                        <option th:value="''" selected></option>
+                        <option th:each="tourType : ${tourTypes}"
+                                th:text="${tourType.name()}" th:value="${tourType.name()}">тип тура
+                        </option>
+                    </select>
+                </div>
+            </div>
+        </div>
+        <br>
+    </form>
+
+    <div th:if="(${isSearch} and ${search_tour.size()} < 1)">
+        <h4 class="textAlignCenter">к сожалению, по вашему запросу ничего не найдено</h4>
+    </div>
+    <div th:if="(${isSearch}) and (${search_tour.size()} > 0) ">
+
+        <!----------  отображение результатов поиска ----------->
+        <h4 class="textAlignCenter">Найденные туры:</h4>
+    </div>
+</div>
+<div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4" id="cardUser">
+    <div class="col-4" th:each="tour: ${search_tour}">
+        <div class="card bg-warning-subtle">
+            <img src="/static/img/siteLogo.png"
+                 th:src="'/img/uploadPath/' + ${tour.getTourImagesList()[0].getFileName()}"
+                 class="card-img-top cardImage"
+                 alt="Очень красивая картинка. Была.">
+            <div class="card-body">
+                <h5 class="card-title text-center" th:text="${tour.getTitle()}"></h5>
+                <h5 class="card-title text-center" th:text="'Тип тура: '+ ${tour.getTourType().toLowerCase()}"></h5>
+                <h5 class="card-title text-center"
+                    th:text="'Стоимость тура: ' + ${tour.getPriceSmallGroup()}"></h5>
+                <h6 class="card-text text-center" th:text="${tour.getDescriptionShort()}">Краткое
+                    описание</h6>
+                <div class="align-items-center vstack" style="text-align: center">
+                    <a class="btn btn-dark m-2 buttonCard"
+                       th:href="@{/tours/info/{id}(id=${tour.getId()})}"
+                       role="button">Подробнее о туре</a>
+                    <a class="btn btn-dark m-2 buttonCard" th:href="@{#contacts}"
+                       role="button">Задать вопрос</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<br>
+<hr style="border-color: #ffda9e">
+<br>
+<!--------------------------------------->
+
+<h4 id="ourTours">НАШИ ТУРЫ</h4>
+
+<!------ Список туров ------>
+
+<div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4" id="cardUser">
+    <div class="col" th:each="tour: ${tours}">
+        <div class="card bg-warning-subtle">
+            <img src="/static/img/siteLogo.png"
+                 th:src="'/img/uploadPath/' + ${tour.getTourImagesList()[0].getFileName()}"
+                 class="card-img-top cardImage"
+                 alt="Очень красивая картинка. Была.">
+            <div class="card-body">
+                <h5 class="card-title text-center" th:text="${tour.getTitle()}"></h5>
+                <h5 class="card-title text-center" th:text="'Тип тура: '+ ${tour.getTourType().toLowerCase()}"></h5>
+                <h5 class="card-title text-center"
+                    th:text="'Стоимость тура: ' + ${tour.getPriceSmallGroup()}"></h5>
+                <h6 class="card-text text-center" th:text="${tour.getDescriptionShort()}">Краткое
+                    описание</h6>
+                <div class="align-items-center vstack" style="text-align: center">
+                    <a class="btn btn-dark m-2 buttonCard"
+                       th:href="@{/tours/info/{id}(id=${tour.getId()})}"
+                       role="button">Подробнее о туре</a>
+                    <a class="btn btn-dark m-2 buttonCard" th:href="@{#contacts}"
+                       role="button">Задать вопрос</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<h4 id="aboutUs">О НАС</h4>
+<p class="text-center">Тут должно быть красочное описание компании с очаровательной историей и великолепными
+    фотографиями</p>
+
+
+<div id="contacts">
+    <h4>НАШИ КОНТАКТЫ</h4>
+
+
+    <div class="row justify-content-around px-5 mx-5">
+        <p class="text-center">телефон: +71234567890</p>
+        <p class="col-12 col-md-6 px-5" style="text-align: right">мессенджер №1: @LookAtMyHorse</p>
+        <p class="col-12 col-md-6 px-5" style="text-align: left">мессенджер №2: @MyHorseIrAmazing</p>
+        <p class="col-12 col-md-6 px-5" style="text-align: right">мы в социальной сети №1:
+            @BestGuysYouEverMet</p>
+        <p class="col-12 col-md-6 px-5" style="text-align: left">мы в социальной сети №2:
+            @AnotherBestGuysYouEverMet</p>
+    </div>
+
+</div>
+
+
+<!--    footer   -->
+<div class="mx-3">
+    <footer class='border-top'>
+        <div class='row align-items-start justify-content-start' id="footer">
+            <div class='row col-2 justify-content-end' id="footerLogo">
+                <img src="/static/img/siteLogo.png" th:src="@{/img/siteLogo.png}"></div>
+            <div class='col-4  align-self-center' style="text-align: left" id="footerTravelCamp">
+                <p style="text-align: left" id="footerTextLogo">TravelCamp</p>
+                <p id="underTravel" style="text-align: left">навстречу приключениям!</p>
+            </div>
+            <div class='col-4 align-self-center'>
+                <p>Разработка сайта:</p>
+                <p>студия "И тааааааааак сойдёт!"</p>
+                <p>creativity@crisis.come</p>
+            </div>
+        </div>
+    </footer>
+</div>
+
+
+<!--подключаем JS с navbar-->
+<!--<script src="/static/js/navbarUser.js" th:src="@{/js/navbarUser.js}"></script>-->
 
 
 </body>

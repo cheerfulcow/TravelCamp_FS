@@ -1,6 +1,8 @@
 package com.example.travelcamp.controllers;
 
+import com.example.travelcamp.enumm.TourTypeEnum;
 import com.example.travelcamp.models.User;
+import com.example.travelcamp.models.tours.Tour;
 import com.example.travelcamp.services.TourService;
 import com.example.travelcamp.services.UserService;
 import com.example.travelcamp.util.UserValidator;
@@ -13,9 +15,9 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.ArrayList;
 
 @Controller
 public class HomeController {
@@ -32,10 +34,6 @@ public class HomeController {
         this.tourService = tourService;
     }
 
-    @GetMapping("/index")
-    public String nonAuthPersonIndex(){
-        return "index";
-    }
 
     @GetMapping("/person_account")
     public String AuthPersonIndex (Model model) {
@@ -79,6 +77,73 @@ public class HomeController {
             userService.registrationNewUser(user);
             return "redirect:/authentication";
         }
+    }
+
+    @GetMapping("/index")
+    public String userIndex(Model model) {
+        model.addAttribute("tours", tourService.findAllTours());
+        model.addAttribute("tourTypes", TourTypeEnum.values());
+        model.addAttribute("search_tour", new ArrayList<Tour>());
+        model.addAttribute("isSearch", false);
+        return "index";
+    }
+
+    @PostMapping("/index/search")
+    public String tourSearch(Model model,
+                             @RequestParam("search") String search,
+                             @RequestParam("priceFrom") String priceFrom,
+                             @RequestParam("priceUpTo") String priceUpTo,
+                             @RequestParam(value = "sortByPrice", required = false, defaultValue = "") String sortByPrice,
+                             @RequestParam(value = "tourType", required = false, defaultValue = "") String tourType
+    ) {
+        model.addAttribute("isSearch", true);
+        model.addAttribute("tours", tourService.findAllTours());
+        model.addAttribute("tourTypes", TourTypeEnum.values());
+        if (!search.equals("")) {
+            model.addAttribute("search_tour", tourService.getToursByTitle(search));
+            return "index";
+        }
+        if (!priceFrom.isEmpty() || !priceUpTo.isEmpty()) { //Если задан диапазон цен
+            if (!tourType.isEmpty()) {
+                if (sortByPrice.equals("sorted_by_ascending_price")) { //диапазон цен + сортировка по возрастанию + тип тура
+                    model.addAttribute("search_tour", tourService.getToursByPriceRangeAndTourTypeSortByPriceAsc(priceFrom, priceUpTo, tourType));
+                    System.out.println("диапазон + тип тура + цена увеличение");
+                } else if (sortByPrice.equals("sorted_by_descending_price")) { //диапазон цен + сортировка по убыванию цены + тип тура
+                    model.addAttribute("search_tour", tourService.getToursFilterByPriceRangeAndTourTypeSortByPriceDesc(priceFrom, priceUpTo, tourType));
+                    System.out.println("диапазон + тип тура + цена уменьшение");
+                } else
+                    model.addAttribute("search_tour", tourService.getToursFilterByPriceRangeAndTourType(priceFrom, priceUpTo, tourType));
+                System.out.println("диапазон + тип тура");
+            } else {
+                if (sortByPrice.equals("sorted_by_ascending_price")) { //диапазон цен + сортировка по возрастанию цены
+                    model.addAttribute("search_tour", tourService.getToursFilterByPriceRangeSortByPriceAsc(priceFrom, priceUpTo)); //диапазон цен + сортировка по возрастанию цены
+                } else if (sortByPrice.equals("sorted_by_descending_price")) { //диапазон цен + сортировка по убыванию цены
+                    model.addAttribute("search_tour", tourService.getToursFilterByPriceRangeSortByPriceDesc(priceFrom, priceUpTo));
+                } else {  //Если выбран только диапазон цен (любое из полей)
+                    model.addAttribute("search_tour", tourService.getToursFilterByPriceRange(priceFrom, priceUpTo));
+                }
+            }
+        } else { //Если диапазон цен не задан
+            if (sortByPrice.equals("sorted_by_ascending_price")) {
+                if (!tourType.isEmpty()) {
+                    model.addAttribute("search_tour", tourService.getToursByTourTypeSortByPriceAsc(tourType));
+                } else model.addAttribute("search_tour", tourService.getToursSortByPriceAsc());
+            } else if (sortByPrice.equals("sorted_by_descending_price")) {
+                if (!tourType.isEmpty()) {
+                    model.addAttribute("search_tour", tourService.getToursByTourTypeSortByPriceDesc(tourType));
+                } else model.addAttribute("search_tour", tourService.getToursSortByPriceDesc());
+            } else model.addAttribute("search_tour", tourService.getToursByTourType(tourType));
+        }
+        model.addAttribute("priceFrom", priceFrom);
+        model.addAttribute("priceUpTo", priceUpTo);
+        return "index";
+    }
+
+    //Метод для получения информации о конкретном туре
+    @GetMapping("/tours/info/{id}")
+    public String infoProduct(@PathVariable("id") long id, Model model) {
+        model.addAttribute("tour", tourService.getTourById(id));
+        return "tourDetailed";
     }
 }
 

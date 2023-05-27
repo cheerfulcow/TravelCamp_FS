@@ -39,8 +39,8 @@ public class SecurityConfig {
                 .requestMatchers("/user/**").hasAuthority(Role.USER.name())
                 //Указываем, что указанные страницы доступны всем пользователям.
                 // Добавляем в этот список также таблицы стилей, JS, папки с картинками и тд (т.к. в момент, когда у пользователя не будет роли - ему все это будет недоступно)
-               .requestMatchers("/authentication", "/registration", "/tours", "/tour/info/{id}", "/tour/search",
-                       "/index","/error", "/person_account", "/logout", "/resources/**", "/static/**",
+               .requestMatchers("/authentication", "/registration", "/tours", "/tours/info/**", "/index", "/index/search",
+                       "/error", "/person_account", "/logout", "/resources/**", "/static/**",
                        "/css/**", "/js/**", "/img/**").permitAll()
                 // указываем, что все остальные страницы доступны user и admin
 //                .anyRequest().hasAnyRole(Role.ADMIN.name(), Role.MODERATOR.name(),Role.USER.name(), Role.GUIDE.name())

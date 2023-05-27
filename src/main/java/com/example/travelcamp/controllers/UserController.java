@@ -58,6 +58,7 @@ public class UserController {
         UserAuthSecurity userAuthSecurity = (UserAuthSecurity) authentication.getPrincipal();
         model.addAttribute("user", userAuthSecurity.getUser());
         model.addAttribute("tours", tourService.findAllTours());
+        model.addAttribute("tourTypes", TourTypeEnum.values());
         model.addAttribute("cart", cartService.getAllToursFromCart(userAuthSecurity.getUser().getId()));
         model.addAttribute("search_tour", new ArrayList<Tour>());
         model.addAttribute("isSearch", false);
@@ -79,40 +80,44 @@ public class UserController {
         model.addAttribute("tours", tourService.findAllTours());
         model.addAttribute("tourTypes", TourTypeEnum.values());
         model.addAttribute("cart", cartService.getAllToursFromCart(userAuthSecurity.getUser().getId()));
+        model.addAttribute("search_tour", new ArrayList<Tour>());
         if (!search.equals("")) {
             model.addAttribute("search_tour", tourService.getToursByTitle(search));
             return "user/indexUser";
         }
-        if (!priceFrom.isEmpty() || !priceUpTo.isEmpty()) {
+        if (!priceFrom.isEmpty() || !priceUpTo.isEmpty()) { //Если задан диапазон цен
             if (!tourType.isEmpty()) {
                 if (sortByPrice.equals("sorted_by_ascending_price")) { //диапазон цен + сортировка по возрастанию + тип тура
-                    model.addAttribute("search_tour", tourService.getToursByPriceRangeAndTourTypeSortByPriceAsc(priceFrom, priceUpTo, tourType)); //диапазон цен + сортировка по возрастанию цены
-                }
-                if (sortByPrice.equals("sorted_by_descending_price")) { //диапазон цен + сортировка по убыванию цены + тип тура
+                    model.addAttribute("search_tour", tourService.getToursByPriceRangeAndTourTypeSortByPriceAsc(priceFrom, priceUpTo, tourType));
+                    System.out.println("диапазон + тип тура + цена увеличение");
+                } else if (sortByPrice.equals("sorted_by_descending_price")) { //диапазон цен + сортировка по убыванию цены + тип тура
                     model.addAttribute("search_tour", tourService.getToursFilterByPriceRangeAndTourTypeSortByPriceDesc(priceFrom, priceUpTo, tourType));
+                    System.out.println("диапазон + тип тура + цена уменьшение");
+                } else
+                    model.addAttribute("search_tour", tourService.getToursFilterByPriceRangeAndTourType(priceFrom, priceUpTo, tourType));
+                System.out.println("диапазон + тип тура");
+            } else {
+                if (sortByPrice.equals("sorted_by_ascending_price")) { //диапазон цен + сортировка по возрастанию цены
+                    model.addAttribute("search_tour", tourService.getToursFilterByPriceRangeSortByPriceAsc(priceFrom, priceUpTo)); //диапазон цен + сортировка по возрастанию цены
+                } else if (sortByPrice.equals("sorted_by_descending_price")) { //диапазон цен + сортировка по убыванию цены
+                    model.addAttribute("search_tour", tourService.getToursFilterByPriceRangeSortByPriceDesc(priceFrom, priceUpTo));
+                } else {  //Если выбран только диапазон цен (любое из полей)
+                    model.addAttribute("search_tour", tourService.getToursFilterByPriceRange(priceFrom, priceUpTo));
                 }
-                model.addAttribute("search_tour", tourService.getToursFilterByPriceRangeAndTourType(priceFrom, priceUpTo, tourType));
             }
-            if (sortByPrice.equals("sorted_by_ascending_price")) { //диапазон цен + сортировка по возрастанию цены
-                model.addAttribute("search_tour", tourService.getToursFilterByPriceRangeSortByPriceAsc(priceFrom, priceUpTo)); //диапазон цен + сортировка по возрастанию цены
-            } else if (sortByPrice.equals("sorted_by_descending_price")) { //диапазон цен + сортировка по убыванию цены
-                model.addAttribute("search_tour", tourService.getToursFilterByPriceRangeSortByPriceDesc(priceFrom, priceUpTo));
-            }
-            else {  //Если выбран только диапазон цен (любое из полей)
-                model.addAttribute("search_tour", tourService.getToursFilterByPriceRange(priceFrom, priceUpTo));
-            }
-        }
-        else {
+        } else { //Если диапазон цен не задан
             if (sortByPrice.equals("sorted_by_ascending_price")) {
-                model.addAttribute("search_tour", tourService.getToursSortByPriceAsc());
-            }
-            if (sortByPrice.equals("sorted_by_descending_price")) {
-                model.addAttribute("search_tour", tourService.getToursSortByPriceDesc());
-            }
+                if (!tourType.isEmpty()) {
+                    model.addAttribute("search_tour", tourService.getToursByTourTypeSortByPriceAsc(tourType));
+                } else model.addAttribute("search_tour", tourService.getToursSortByPriceAsc());
+            } else if (sortByPrice.equals("sorted_by_descending_price")) {
+                if (!tourType.isEmpty()) {
+                    model.addAttribute("search_tour", tourService.getToursByTourTypeSortByPriceDesc(tourType));
+                } else model.addAttribute("search_tour", tourService.getToursSortByPriceDesc());
+            } else model.addAttribute("search_tour", tourService.getToursByTourType(tourType));
         }
-
-
-        model.addAttribute("search_tour", new ArrayList<Tour>());
+        model.addAttribute("priceFrom", priceFrom);
+        model.addAttribute("priceUpTo", priceUpTo);
         return "user/indexUser";
     }
 
