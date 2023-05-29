@@ -79,23 +79,35 @@
     </ul>
     <!-- The slideshow -->
     <div class="carousel-inner ">
-        <div class="carousel-item active">
+        <div class="carousel-item active" data-bs-interval="100">
             <img class="d-block w-100"
                  src="/static/img/uploadPath/mainSlider/main_1.jpg"
                  th:src="'/img/uploadPath/' + 'mainSlider/main_1.jpg'">
+            <div class="carousel-caption d-none d-md-block mb-20vh ">
+                <h3 class='carouselH3'>Видовые пешеходные маршруты по горной местности</h3>
+            </div>
 
         </div>
-        <div class="carousel-item">
+        <div class="carousel-item" data-bs-interval="100">
             <img class="d-block w-100" src="/static/img/siteLogo.png"
                  th:src="'/img/uploadPath/' + 'mainSlider/main_2.jpg'">
+            <div class="carousel-caption d-none d-md-block mb-20vh">
+                <h3 class='carouselH3'>Пешеходные маршруты в предгорье</h3>
+            </div>
         </div>
-        <div class="carousel-item">
+        <div class="carousel-item" data-bs-interval="100">
             <img class="d-block w-100" th:src="'/img/uploadPath/' + 'mainSlider/main_3.jpg'"
                  src="/static/img/siteLogo.png">
+            <div class="carousel-caption d-none d-md-block mb-20vh">
+                <h3 class='carouselH3'>Многодневные походы в горы</h3>
+            </div>
         </div>
-        <div class="carousel-item">
+        <div class="carousel-item" data-bs-interval="100">
             <img class="d-block w-100" th:src="'/img/uploadPath/' + 'mainSlider/main_4.jpg'"
                  src="/static/img/siteLogo.png">
+            <div class="carousel-caption d-none d-md-block mb-20vh">
+                <h3 class='carouselH3'>Экологические тропы</h3>
+            </div>
         </div>
     </div>
     <!-- Left and right controls -->

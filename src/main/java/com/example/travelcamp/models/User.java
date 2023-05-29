@@ -1,9 +1,11 @@
 package com.example.travelcamp.models;
 
-import com.example.travelcamp.enumm.Role;
 import com.example.travelcamp.models.tours.Tour;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.*;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.Size;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -30,7 +32,7 @@ public class User {
     private String password;
 
     @Column(name = "role", nullable = false)
-    private String  role;
+    private String role;
 
     @Column (nullable = false, unique = true)
     @NotEmpty(message = "это поле обязательно для заполнения")

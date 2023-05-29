@@ -19,7 +19,9 @@
     <!--    для коллапса (выезжающий фильтр/сортировка   -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
 
+
     <link rel="stylesheet" href="/static/css/user.css" th:href="@{/css/user.css}">
+
 
 </head>
 
@@ -71,23 +73,35 @@
     </ul>
     <!-- The slideshow -->
     <div class="carousel-inner ">
-        <div class="carousel-item active">
+        <div class="carousel-item active" data-bs-interval="100">
             <img class="d-block w-100"
                  src="/static/img/uploadPath/mainSlider/main_1.jpg"
                  th:src="'/img/uploadPath/' + 'mainSlider/main_1.jpg'">
+            <div class="carousel-caption d-none d-md-block mb-20vh ">
+                <h3 class='carouselH3'>Видовые пешеходные маршруты по горной местности</h3>
+            </div>
 
         </div>
-        <div class="carousel-item">
+        <div class="carousel-item" data-bs-interval="100">
             <img class="d-block w-100" src="/static/img/siteLogo.png"
                  th:src="'/img/uploadPath/' + 'mainSlider/main_2.jpg'">
+            <div class="carousel-caption d-none d-md-block mb-20vh">
+                <h3 class='carouselH3'>Пешеходные маршруты в предгорье</h3>
+            </div>
         </div>
-        <div class="carousel-item">
+        <div class="carousel-item" data-bs-interval="100">
             <img class="d-block w-100" th:src="'/img/uploadPath/' + 'mainSlider/main_3.jpg'"
                  src="/static/img/siteLogo.png">
+            <div class="carousel-caption d-none d-md-block mb-20vh">
+                <h3 class='carouselH3'>Многодневные походы в горы</h3>
+            </div>
         </div>
-        <div class="carousel-item">
+        <div class="carousel-item" data-bs-interval="100">
             <img class="d-block w-100" th:src="'/img/uploadPath/' + 'mainSlider/main_4.jpg'"
                  src="/static/img/siteLogo.png">
+            <div class="carousel-caption d-none d-md-block mb-20vh">
+                <h3 class='carouselH3'>Экологические тропы</h3>
+            </div>
         </div>
     </div>
     <!-- Left and right controls -->
@@ -101,12 +115,12 @@
 
 
 <!-----------  поиск  ----------->
-<div class="tourSearch mt-5">
+<div class="tourSearch mt-5" id="search">
     <form id="ourTours" class="mb-2" th:method="POST" th:action="@{/index/search}">
         <div class="text-center">
             <div class="col-md-10 col-xl-8 offset-md-1 offset-xl-2 mb-3">
                 <label for="search" class="mr-3">поиск по названию тура:</label>
-                <input type="text" id="search" name="search" th:value="*{value_search}" class="mx-0 searchInput">
+                <input type="text"  name="search" th:value="*{value_search}" class="mx-0 searchInput">
                 <button class="btn btn-dark buttonFilter" type="button" data-bs-toggle="collapse"
                         data-bs-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
                     &#11167;
