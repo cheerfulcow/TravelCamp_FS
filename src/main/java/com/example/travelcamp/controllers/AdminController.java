@@ -197,9 +197,6 @@ public class AdminController {
         return "redirect:/admin/users/info/{id}";
     }
 
-
-//----------------    РАБОТА С ЗАКАЗАМИ   ----------------//
-
     //Отображение страницы со всеми заказами
     @GetMapping("/orders")
     public String showAllOrders(Model model) {

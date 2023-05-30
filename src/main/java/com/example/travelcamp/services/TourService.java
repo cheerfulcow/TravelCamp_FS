@@ -79,7 +79,7 @@ public class TourService {
     //Поиск по ценовому диапазону
     public List<Tour> getToursFilterByPriceRange(String priceFrom, String priceUpTo) {
         return tourRepository.findTourByPriceRange(Double.parseDouble(setPriceFromIfEmpty(priceFrom)),
-                Double.parseDouble(setPriceFromIfEmpty(setPriceUpToIfEmpty(priceUpTo))));
+                Double.parseDouble(setPriceUpToIfEmpty(priceUpTo)));
     }
 
     //Поиск по ценовому диапазону и сортировка по убыванию цены
@@ -91,25 +91,25 @@ public class TourService {
     //Поиск по ценовому диапазону и сортировка по возрастанию цены
     public List<Tour> getToursFilterByPriceRangeSortByPriceAsc(String priceFrom, String priceUpTo) {
         return tourRepository.findTourByPriceRangeSortByPriceAsc(Double.parseDouble(setPriceFromIfEmpty(priceFrom)),
-                Double.parseDouble(setPriceFromIfEmpty(setPriceUpToIfEmpty(priceUpTo))));
+                Double.parseDouble(setPriceUpToIfEmpty(priceUpTo)));
     }
 
     //Поиск по ценовому диапазону и типу тура
     public List<Tour> getToursFilterByPriceRangeAndTourType (String priceFrom, String priceUpTo, String tourType) {
         return tourRepository.findTourByPriceRangeAndTourType(Double.parseDouble(setPriceFromIfEmpty(priceFrom)),
-                Double.parseDouble(setPriceFromIfEmpty(setPriceUpToIfEmpty(priceUpTo))), tourType);
+                Double.parseDouble(setPriceUpToIfEmpty(priceUpTo)), tourType);
     }
 
     //Поиск по ценовому диапазону и типу тура, сортировка по возрастанию цены
     public List<Tour> getToursByPriceRangeAndTourTypeSortByPriceAsc (String priceFrom, String priceUpTo, String tourType) {
         return tourRepository.findTourByPriceRangeAndTourTypeSortByPriceAsc(Double.parseDouble(setPriceFromIfEmpty(priceFrom)),
-                Double.parseDouble(setPriceFromIfEmpty(setPriceUpToIfEmpty(priceUpTo))), tourType);
+                Double.parseDouble(setPriceUpToIfEmpty(priceUpTo)), tourType);
     }
 
     //Поиск по ценовому диапазону и типу тура, сортировка по убыванию цены
     public List<Tour> getToursFilterByPriceRangeAndTourTypeSortByPriceDesc (String priceFrom, String priceUpTo, String tourType) {
         return tourRepository.findTourByPriceRangeAndTourTypeSortByPriceDesc(Double.parseDouble(setPriceFromIfEmpty(priceFrom)),
-                Double.parseDouble(setPriceFromIfEmpty(setPriceUpToIfEmpty(priceUpTo))), tourType);
+                Double.parseDouble(setPriceUpToIfEmpty(priceUpTo)), tourType);
     }
 
     //Сортировка по типу тура и по убыванию цены
